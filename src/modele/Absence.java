@@ -17,12 +17,15 @@ public class Absence {
 	public Date getDateDebut() {
 		return this.datedebut;
 	}
+	
 	public Date getDateFin() {
 		return this.datefin;
 	}
+	
 	public Personnel getPersonnel() {
 		return this.lePersonnel;
 	}
+	
 	public Motif getMotif() {
 		return this.leMotif;
 	}
