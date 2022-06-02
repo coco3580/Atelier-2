@@ -6,4 +6,8 @@ public class Service {
 	public Service() {
 		
 	}
+	
+	public String getNom() {
+		return this.nom;
+	}
 }

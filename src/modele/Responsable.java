@@ -2,9 +2,12 @@ package modele;
 
 public class Responsable {
 	private String login;
-	private String pwd;
 	
 	public Responsable() {
 		
+	}
+	
+	public String getLogin() {
+		return this.login;
 	}
 }

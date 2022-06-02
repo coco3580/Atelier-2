@@ -9,4 +9,19 @@ public class Personnel {
 	public Personnel() {
 		
 	}
+	
+	public String getNom() {
+		return this.nom;
+	}
+	
+	public String getPrenom() {
+		return this.prenom;
+	}
+	
+	public String getTel() {
+		return this.tel;
+	}
+	public String getMail() {
+		return this.mail;
+	}
 }

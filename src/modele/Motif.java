@@ -6,4 +6,8 @@ public class Motif {
 	public Motif() {
 		
 	}
+	
+	public String getLibelle() {
+		return this.libelle;
+	}
 }

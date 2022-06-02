@@ -8,4 +8,11 @@ public class Absence {
 	public Absence() {
 		
 	}
+	
+	public Date getDateDebut() {
+		return this.datedebut;
+	}
+	public Date getDateFin() {
+		return this.datefin;
+	}
 }
