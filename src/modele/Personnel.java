@@ -5,8 +5,15 @@ public class Personnel {
 	private String prenom;
 	private String tel;
 	private String mail;
+	private Service leService;
 	
-	public Personnel() {
+	public Personnel(String leNom, String lePrenom, String leTel, String leMail, Service leService) {
+		this.nom = leNom;
+		this.prenom = lePrenom;
+		this.tel = leTel;
+		this.mail = leMail;
+		this.leService = leService;
+		
 		
 	}
 	
@@ -23,5 +30,8 @@ public class Personnel {
 	}
 	public String getMail() {
 		return this.mail;
+	}
+	public Service getService() {
+		return this.leService;
 	}
 }
