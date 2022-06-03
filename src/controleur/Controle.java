@@ -1,9 +1,11 @@
 package controleur;
 
-import vue.Connexion;
+import javax.swing.JLabel;
+
+import vue.FormConnexion;
 
 public class Controle {
-	private Connexion pageConnexion ;
+	private FormConnexion pageConnexion ;
 
 	public static void main(String[] args) {
 		new Controle();
@@ -13,7 +15,16 @@ public class Controle {
 	 * Constructeur
 	 */
 	private Controle() {
-		this.pageConnexion = new Connexion() ;
+		this.pageConnexion = new FormConnexion() ;
 		this.pageConnexion.setVisible(true);
+	}
+	
+	public static void connexion(String utilisateurTextField, String mdpTextField, JLabel erreurChampVideLabel) {
+
+		if(utilisateurTextField.isEmpty() || mdpTextField.isEmpty()) {
+			erreurChampVideLabel.setText("Veuillez entrer tous les champs");
+		} else {
+			erreurChampVideLabel.setText("Les informations ne sont pas valides");
+		}
 	}
 }

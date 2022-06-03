@@ -8,7 +8,6 @@ public class Application {
 	}
 	
 	public void connection() {
-		"..."
 		this.connecte = true;
 	}
 	
