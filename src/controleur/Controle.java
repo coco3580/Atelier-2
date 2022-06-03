@@ -1,8 +1,11 @@
 package controleur;
 
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 
-import vue.FormConnexion;
+import vue.*;
+import modele.*;
 
 public class Controle {
 	private FormConnexion pageConnexion ;
@@ -24,7 +27,12 @@ public class Controle {
 		if(utilisateurTextField.isEmpty() || mdpTextField.isEmpty()) {
 			erreurChampVideLabel.setText("Veuillez entrer tous les champs");
 		} else {
-			erreurChampVideLabel.setText("Les informations ne sont pas valides");
+			Responsable leResponsable = AccesDonnees.testConnexion(utilisateurTextField, mdpTextField);
+			if(leResponsable.getLogin() == null) {
+				erreurChampVideLabel.setText("Les champs ne sont pas valides");
+			} else {
+				System.out.print(leResponsable.getLogin());
+			}
 		}
 	}
 }
