@@ -8,7 +8,8 @@ import vue.*;
 import modele.*;
 
 public class Controle {
-	private FormConnexion pageConnexion ;
+	private static FormConnexion pageConnexion ;
+	private static GestionPersonnel pageGestionPersonnel ;
 
 	public static void main(String[] args) {
 		new Controle();
@@ -31,8 +32,17 @@ public class Controle {
 			if(leResponsable.getLogin() == null) {
 				erreurChampVideLabel.setText("Les champs ne sont pas valides");
 			} else {
-				System.out.print(leResponsable.getLogin());
+				pageConnexion.setEnabled(false);
+				pageConnexion.setVisible(false);
+				
+				pageGestionPersonnel = new GestionPersonnel() ;
+				pageGestionPersonnel.setVisible(true);
 			}
 		}
+	}
+	
+	public static ArrayList<Personnel> listPersonnel(){
+		ArrayList<Personnel> laListPersonnel = AccesDonnees.recupPersonnel();
+		return laListPersonnel;
 	}
 }

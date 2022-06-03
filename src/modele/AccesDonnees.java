@@ -23,4 +23,19 @@ public abstract class AccesDonnees {
 		
 		return unResponsable;
 	}
+	
+	public static ArrayList<Personnel> recupPersonnel() {
+		String sql = "select personnel.*, service.nom from personnel join service on personnel.idservice = service.idservice";
+		ArrayList<Personnel> lesPersonnels = new ArrayList<Personnel>();
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqSelect(sql, null);
+		while (cn.read()) {
+			Service leService = new Service(cn.field("service.nom").toString());
+			Personnel unPersonnel = new Personnel(cn.field("personnel.nom").toString(), cn.field("personnel.prenom").toString(), 
+					cn.field("personnel.tel").toString(), cn.field("personnel.mail").toString(), leService);
+			lesPersonnels.add(unPersonnel);
+		}
+		cn.close();
+		return lesPersonnels;
+	}
 }
