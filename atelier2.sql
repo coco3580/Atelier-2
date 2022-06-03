@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 02 juin 2022 à 08:05
+-- Généré le : ven. 03 juin 2022 à 01:19
 -- Version du serveur :  8.0.21
 -- Version de PHP : 7.3.21
 
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `responsable` (
 --
 
 INSERT INTO `responsable` (`login`, `pwd`) VALUES
-('administrateur', '513cfa4a02a04b721f3f234791b9b4d5eb1df728a59c7b17a44b89050a38a86b');
+('admin', 'b85dce787ecccb30bb05e8afc31038b5e1048a74a8e3123b1a5d1084b2749650');
 
 -- --------------------------------------------------------
 
