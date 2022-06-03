@@ -28,7 +28,7 @@ public class Controle {
 		if(utilisateurTextField.isEmpty() || mdpTextField.isEmpty()) {
 			erreurChampVideLabel.setText("Veuillez entrer tous les champs");
 		} else {
-			Responsable leResponsable = AccesDonnees.testConnexion(utilisateurTextField, mdpTextField);
+			Responsable leResponsable = AccesDonnees.requeteTestConnexion(utilisateurTextField, mdpTextField);
 			if(leResponsable.getLogin() == null) {
 				erreurChampVideLabel.setText("Les champs ne sont pas valides");
 			} else {
@@ -42,7 +42,11 @@ public class Controle {
 	}
 	
 	public static ArrayList<Personnel> listPersonnel(){
-		ArrayList<Personnel> laListPersonnel = AccesDonnees.recupPersonnel();
+		ArrayList<Personnel> laListPersonnel = AccesDonnees.requeteRecupPersonnel();
 		return laListPersonnel;
+	}
+	
+	public static void suppressionPersonnel(Personnel lePersonnel) {
+		AccesDonnees.requeteSuppressionPersonnel(lePersonnel);
 	}
 }

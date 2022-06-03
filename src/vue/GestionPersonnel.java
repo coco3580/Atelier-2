@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
@@ -31,6 +33,9 @@ import java.awt.event.ActionEvent;
 public class GestionPersonnel extends JFrame {
 
 	private JPanel contentPane;
+	private JList listePersonnel;
+	private JButton btnSuppPersonnel;
+	private ArrayList<Personnel> laListPersonnel;
 
 	/**
 	 * Launch the application.
@@ -60,6 +65,7 @@ public class GestionPersonnel extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel titreGestionPersonnel = new JLabel("Gestion du personnel");
+		titreGestionPersonnel.setForeground(SystemColor.textHighlight);
 		titreGestionPersonnel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		titreGestionPersonnel.setHorizontalAlignment(SwingConstants.CENTER);
 		titreGestionPersonnel.setBounds(158, 0, 326, 86);
@@ -73,16 +79,10 @@ public class GestionPersonnel extends JFrame {
 		});
 		btnAjouterPersonnel.setBounds(158, 347, 100, 28);
 		contentPane.add(btnAjouterPersonnel);
-		
-		/*Btn Supprimer Personnel*/
-		JButton btnSuppPersonnel = new JButton("Supprimer");
-		btnSuppPersonnel.setEnabled(false);
-		btnSuppPersonnel.setBounds(395, 347, 100, 28);
-		contentPane.add(btnSuppPersonnel);
-		
 
 		/*List personnel*/
-		JList listePersonnel = new JList();
+		listePersonnel = new JList();
+		listePersonnel.setForeground(SystemColor.controlDkShadow);
 		listePersonnel.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
 		        JList list = (JList)evt.getSource();
@@ -99,7 +99,29 @@ public class GestionPersonnel extends JFrame {
 				return values[index];
 			}
 		});
-		ArrayList<Personnel> laListPersonnel = new ArrayList();
+		
+		/*Btn Supprimer Personnel*/
+		btnSuppPersonnel = new JButton("Supprimer");
+		btnSuppPersonnel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				suppressionPersonnel();
+			}
+		});
+		btnSuppPersonnel.setEnabled(false);
+		btnSuppPersonnel.setBounds(395, 347, 100, 28);
+		contentPane.add(btnSuppPersonnel);
+		
+		listePersonnel.setBounds(79, 88, 484, 248);
+		resetListPersonnel();
+		contentPane.add(listePersonnel);
+		
+		JPanel btnPanel = new JPanel();
+		btnPanel.setBounds(79, 336, 484, 50);
+		contentPane.add(btnPanel);
+		
+	}
+	private void resetListPersonnel() {
+		laListPersonnel = new ArrayList();
 		laListPersonnel = Controle.listPersonnel();
 		DefaultListModel listModel = new DefaultListModel();
 		for(Personnel lePersonnel : laListPersonnel) {
@@ -108,11 +130,12 @@ public class GestionPersonnel extends JFrame {
 			listModel.addElement(personnel);
 		};
 		listePersonnel.setModel(listModel);
-		listePersonnel.setBounds(79, 97, 484, 239);
-		contentPane.add(listePersonnel);
-		
-		JPanel btnPanel = new JPanel();
-		btnPanel.setBounds(79, 336, 484, 50);
-		contentPane.add(panel);
+	}
+	private void suppressionPersonnel() {
+		int confirmInput = JOptionPane.showConfirmDialog(null, "Supprimer ce personnel?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+		if(confirmInput == 0) {
+			Controle.suppressionPersonnel(laListPersonnel.get(listePersonnel.getSelectedIndex()));
+			resetListPersonnel();
+		}
 	}
 }
