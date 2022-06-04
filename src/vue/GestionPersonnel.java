@@ -33,8 +33,11 @@ import java.awt.event.ActionEvent;
 public class GestionPersonnel extends JFrame {
 
 	private JPanel contentPane;
+	private FormModification leFormModification;
 	private JList listePersonnel;
 	private JButton btnSuppPersonnel;
+	private JButton btnAjouterPersonnel;
+	private JButton btnModifierPersonnel;
 	private ArrayList<Personnel> laListPersonnel;
 
 	/**
@@ -70,15 +73,6 @@ public class GestionPersonnel extends JFrame {
 		titreGestionPersonnel.setHorizontalAlignment(SwingConstants.CENTER);
 		titreGestionPersonnel.setBounds(158, 0, 326, 86);
 		contentPane.add(titreGestionPersonnel);
-		
-		/*Btn Ajouter Personnel*/
-		JButton btnAjouterPersonnel = new JButton("Ajouter");
-		btnAjouterPersonnel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnAjouterPersonnel.setBounds(158, 347, 100, 28);
-		contentPane.add(btnAjouterPersonnel);
 
 		/*List personnel*/
 		listePersonnel = new JList();
@@ -88,17 +82,30 @@ public class GestionPersonnel extends JFrame {
 		        JList list = (JList)evt.getSource();
 	            int index = list.locationToIndex(evt.getPoint());
 	            btnSuppPersonnel.setEnabled(true);
+	            btnModifierPersonnel.setEnabled(true);
 		    }
 		});
-		listePersonnel.setModel(new AbstractListModel() {
-			String[] values = new String[] {};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
+		
+		listePersonnel.setBounds(79, 88, 484, 248);
+		resetListPersonnel();
+		contentPane.add(listePersonnel);
+		
+
+		/*Btn Ajouter Personnel*/
+		btnAjouterPersonnel = new JButton("Ajouter");
+		btnAjouterPersonnel.setBounds(124, 347, 100, 28);
+		contentPane.add(btnAjouterPersonnel);
+		
+		/*Btn Modifier Personnel*/
+		btnModifierPersonnel = new JButton("Modifier");
+		btnModifierPersonnel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				modificationPersonnel();
 			}
 		});
+		btnModifierPersonnel.setEnabled(false);
+		btnModifierPersonnel.setBounds(268, 347, 100, 28);
+		contentPane.add(btnModifierPersonnel);
 		
 		/*Btn Supprimer Personnel*/
 		btnSuppPersonnel = new JButton("Supprimer");
@@ -108,16 +115,8 @@ public class GestionPersonnel extends JFrame {
 			}
 		});
 		btnSuppPersonnel.setEnabled(false);
-		btnSuppPersonnel.setBounds(395, 347, 100, 28);
+		btnSuppPersonnel.setBounds(411, 347, 100, 28);
 		contentPane.add(btnSuppPersonnel);
-		
-		listePersonnel.setBounds(79, 88, 484, 248);
-		resetListPersonnel();
-		contentPane.add(listePersonnel);
-		
-		JPanel btnPanel = new JPanel();
-		btnPanel.setBounds(79, 336, 484, 50);
-		contentPane.add(btnPanel);
 		
 	}
 	private void resetListPersonnel() {
@@ -126,10 +125,15 @@ public class GestionPersonnel extends JFrame {
 		DefaultListModel listModel = new DefaultListModel();
 		for(Personnel lePersonnel : laListPersonnel) {
 			String personnel = lePersonnel.getPrenom()+ " " + lePersonnel.getNom() + " - " + lePersonnel.getTel() + " - " + lePersonnel.getMail() +
-					lePersonnel.getService().getNom();
+					 " - " + lePersonnel.getService().getNom();
 			listModel.addElement(personnel);
 		};
 		listePersonnel.setModel(listModel);
+	}
+	private void modificationPersonnel() {
+		leFormModification = new FormModification();
+		leFormModification.setVisible(true);
+		leFormModification.insertInformations(laListPersonnel.get(listePersonnel.getSelectedIndex()));
 	}
 	private void suppressionPersonnel() {
 		int confirmInput = JOptionPane.showConfirmDialog(null, "Supprimer ce personnel?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);

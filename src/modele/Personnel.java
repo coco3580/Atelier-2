@@ -15,8 +15,6 @@ public class Personnel {
 		this.tel = leTel;
 		this.mail = leMail;
 		this.leService = leService;
-		
-		
 	}
 	public int getId() {
 		return this.id;

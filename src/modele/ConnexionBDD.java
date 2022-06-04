@@ -31,7 +31,6 @@ public class ConnexionBDD {
 	
 	public void reqUpdate(String req, ArrayList<Object> lesParams) {
 		if(cn != null) {
-			System.out.println(req);
 			try {
 				PreparedStatement pst = cn.prepareStatement(req);
 				if(lesParams != null) {
@@ -49,7 +48,6 @@ public class ConnexionBDD {
 	
 	public void reqSelect(String req, ArrayList<Object> lesParams) {
 		if(cn != null) {
-			System.out.println(req);
 			try {
 				PreparedStatement pst = cn.prepareStatement(req);
 				if(lesParams != null) {

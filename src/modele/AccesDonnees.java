@@ -25,12 +25,12 @@ public abstract class AccesDonnees {
 	}
 	
 	public static ArrayList<Personnel> requeteRecupPersonnel() {
-		String sql = "select personnel.*, service.nom from personnel join service on personnel.idservice = service.idservice";
+		String sql = "select personnel.*, service.* from personnel join service on personnel.idservice = service.idservice";
 		ArrayList<Personnel> lesPersonnels = new ArrayList<Personnel>();
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqSelect(sql, null);
 		while (cn.read()) {
-			Service leService = new Service(cn.field("service.nom").toString());
+			Service leService = new Service(Integer.parseInt(cn.field("service.idService").toString()), cn.field("service.nom").toString());
 			Personnel unPersonnel = new Personnel(Integer.parseInt(cn.field("personnel.idpersonnelle").toString()), cn.field("personnel.nom").toString(), cn.field("personnel.prenom").toString(), 
 					cn.field("personnel.tel").toString(), cn.field("personnel.mail").toString(), leService);
 			lesPersonnels.add(unPersonnel);
@@ -72,5 +72,17 @@ public abstract class AccesDonnees {
 		
 		cn.close();
 		return lesPersonnels;
+	}
+	public static ArrayList<Service> requeteRecupService() {
+		String sql = "select * from service";
+		ArrayList<Service> lesServices = new ArrayList<Service>();
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqSelect(sql, null);
+		while (cn.read()) {
+			Service leService = new Service(Integer.parseInt(cn.field("idService").toString()), cn.field("nom").toString());
+			lesServices.add(leService);
+		}
+		cn.close();
+		return lesServices;
 	}
 }

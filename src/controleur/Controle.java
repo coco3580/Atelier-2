@@ -35,7 +35,7 @@ public class Controle {
 				pageConnexion.setEnabled(false);
 				pageConnexion.setVisible(false);
 				
-				pageGestionPersonnel = new GestionPersonnel() ;
+				pageGestionPersonnel = new GestionPersonnel();
 				pageGestionPersonnel.setVisible(true);
 			}
 		}
@@ -49,4 +49,9 @@ public class Controle {
 	public static void suppressionPersonnel(Personnel lePersonnel) {
 		AccesDonnees.requeteSuppressionPersonnel(lePersonnel);
 	}
+	
+	public static ArrayList<Service> recupService() {
+		return AccesDonnees.requeteRecupService();
+	}
+
 }
