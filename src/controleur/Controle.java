@@ -53,5 +53,11 @@ public class Controle {
 	public static ArrayList<Service> recupService() {
 		return AccesDonnees.requeteRecupService();
 	}
+	public static void insertPersonnel(ArrayList<String> nouvInformationsPersonnel, int idService) {
+		AccesDonnees.requeteInsertPersonnel(nouvInformationsPersonnel, idService);
+	}
+	public static void modifierPersonnel(ArrayList<String> nouvInformationsPersonnel, int idService, int idPersonnel) {
+		AccesDonnees.requeteModifierPersonnel(nouvInformationsPersonnel, idService, idPersonnel);
+	}
 
 }

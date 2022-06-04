@@ -119,7 +119,7 @@ public class GestionPersonnel extends JFrame {
 		contentPane.add(btnSuppPersonnel);
 		
 	}
-	private void resetListPersonnel() {
+	public void resetListPersonnel() {
 		laListPersonnel = new ArrayList();
 		laListPersonnel = Controle.listPersonnel();
 		DefaultListModel listModel = new DefaultListModel();
@@ -133,7 +133,7 @@ public class GestionPersonnel extends JFrame {
 	private void modificationPersonnel() {
 		leFormModification = new FormModification();
 		leFormModification.setVisible(true);
-		leFormModification.insertInformations(laListPersonnel.get(listePersonnel.getSelectedIndex()));
+		leFormModification.insertInformations(laListPersonnel.get(listePersonnel.getSelectedIndex()), this);
 	}
 	private void suppressionPersonnel() {
 		int confirmInput = JOptionPane.showConfirmDialog(null, "Supprimer ce personnel?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);

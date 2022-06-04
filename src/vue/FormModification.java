@@ -9,9 +9,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.security.Provider.Service;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.awt.Color;
 import javax.swing.JComboBox;
 
@@ -33,9 +36,11 @@ public class FormModification extends JFrame {
 	private JLabel lblTel;
 	private JLabel lblMail;
 	private JLabel lblService;
+	private JButton btnConfirmerModif;
 
 	private Personnel lePersonnel;
 	private ArrayList<modele.Service> laListService;
+	private GestionPersonnel laPageGestionPersonnel;
 
 	/**
 	 * Launch the application.
@@ -64,7 +69,12 @@ public class FormModification extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnConfirmerModif = new JButton("Confirmer");
+		btnConfirmerModif = new JButton("Confirmer");
+		btnConfirmerModif.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				confirmerModif();
+			}
+		});
 		btnConfirmerModif.setBounds(69, 259, 100, 31);
 		contentPane.add(btnConfirmerModif);
 		
@@ -131,12 +141,30 @@ public class FormModification extends JFrame {
 		lblService.setBounds(85, 206, 57, 14);
 		contentPane.add(lblService);
 	}
+	public void confirmerModif() {
+		int confirmInput = JOptionPane.showConfirmDialog(null, "Confirmer les modifications?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+		if(confirmInput == 0) {
+			ArrayList<String> nouvInformationsPersonnel = new ArrayList<String>();
+			nouvInformationsPersonnel.add(textFieldNom.getText());
+			nouvInformationsPersonnel.add(textFieldPrenom.getText());
+			nouvInformationsPersonnel.add(textFieldTel.getText());
+			nouvInformationsPersonnel.add(textFieldMail.getText());
+			
+			String servicePersonnel = (String) comboBoxService.getSelectedItem();
+			Controle.modifierPersonnel(nouvInformationsPersonnel, lePersonnel.getService().getId(), lePersonnel.getId());
+			
+			this.laPageGestionPersonnel.resetListPersonnel();
+			this.setVisible(false);
+			this.setEnabled(false);
+		}
+	}
 	public void AnnulerModif() {
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
-	public void insertInformations(Personnel personnel) {
+	public void insertInformations(Personnel personnel, GestionPersonnel PageGestionPersonnel) {
 		lePersonnel = personnel;
+		laPageGestionPersonnel = PageGestionPersonnel;
 		
 		textFieldNom.setText(lePersonnel.getNom());
 		textFieldPrenom.setText(lePersonnel.getPrenom());

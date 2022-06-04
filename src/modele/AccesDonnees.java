@@ -85,4 +85,28 @@ public abstract class AccesDonnees {
 		cn.close();
 		return lesServices;
 	}
+	public static void requeteModifierPersonnel(ArrayList<String> nouvInformationsPersonnel, int idService, int idPersonnel) {
+		String sql = "UPDATE personnel SET nom = ?, prenom = ?, tel = ?, mail = ?, idservice = ? WHERE idpersonnelle = ?";
+		ArrayList<Object> lesParams = new ArrayList<Object>();
+		for(String param : nouvInformationsPersonnel) {
+			lesParams.add(param);
+		}
+		lesParams.add(idService);
+		lesParams.add(idPersonnel);
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqUpdate(sql, lesParams);
+	}
+	
+	public static void requeteInsertPersonnel(ArrayList<String> nouvInformationsPersonnel, int idService) {
+		String sql = "insert into personnel(nom, prenom, tel, mail, idservice) values(?, ?, ?, ?, ?)";
+		ArrayList<Object> lesParams = new ArrayList<Object>();
+		for(String param : nouvInformationsPersonnel) {
+			lesParams.add(param);
+		}
+		lesParams.add(nouvInformationsPersonnel);
+		lesParams.add(idService);
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqUpdate(sql, lesParams);
+	}
 }
