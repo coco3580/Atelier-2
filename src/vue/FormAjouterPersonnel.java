@@ -23,7 +23,7 @@ import modele.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class FormModification extends JFrame {
+public class FormAjouterPersonnel extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldNom;
@@ -49,7 +49,7 @@ public class FormModification extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FormModification frame = new FormModification();
+					FormAjouterPersonnel frame = new FormAjouterPersonnel();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +61,7 @@ public class FormModification extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FormModification() {
+	public FormAjouterPersonnel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 340);
 		contentPane = new JPanel();
@@ -72,7 +72,7 @@ public class FormModification extends JFrame {
 		btnConfirmerModif = new JButton("Confirmer");
 		btnConfirmerModif.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				confirmerModif();
+				confirmerInsert();
 			}
 		});
 		btnConfirmerModif.setBounds(69, 259, 100, 31);
@@ -81,7 +81,7 @@ public class FormModification extends JFrame {
 		JButton btnAnnulerModif = new JButton("Annuler");
 		btnAnnulerModif.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AnnulerModif();
+				AnnulerInsert();
 			}
 		});
 		btnAnnulerModif.setBounds(258, 259, 100, 31);
@@ -141,42 +141,37 @@ public class FormModification extends JFrame {
 		lblService.setBounds(85, 206, 57, 14);
 		contentPane.add(lblService);
 	}
-	public void confirmerModif() {
-		int confirmInput = JOptionPane.showConfirmDialog(null, "Confirmer les modifications?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
-		if(confirmInput == 0) {
-			ArrayList<String> nouvInformationsPersonnel = new ArrayList<String>();
-			nouvInformationsPersonnel.add(textFieldNom.getText());
-			nouvInformationsPersonnel.add(textFieldPrenom.getText());
-			nouvInformationsPersonnel.add(textFieldTel.getText());
-			nouvInformationsPersonnel.add(textFieldMail.getText());
-			
-			String servicePersonnel = (String) comboBoxService.getSelectedItem();
-			Controle.modifierPersonnel(nouvInformationsPersonnel, lePersonnel.getService().getId(), lePersonnel.getId());
-			
-			this.laPageGestionPersonnel.resetListPersonnel();
-			this.setVisible(false);
-			this.setEnabled(false);
+	public void confirmerInsert() {
+		ArrayList<String> informationsPersonnel = new ArrayList<String>();
+		informationsPersonnel.add(textFieldNom.getText());
+		informationsPersonnel.add(textFieldPrenom.getText());
+		informationsPersonnel.add(textFieldTel.getText());
+		informationsPersonnel.add(textFieldMail.getText());
+		
+		String servicePersonnel = (String) comboBoxService.getSelectedItem();
+		for(modele.Service service : laListService) {
+			if(service.getNom() == servicePersonnel) {
+				int serviceId = service.getId();
+				Controle.ajouterPersonnel(informationsPersonnel, serviceId);
+				break;
+			}
 		}
-	}
-	public void AnnulerModif() {
+		
+		this.laPageGestionPersonnel.resetListPersonnel();
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
-	public void insertInformations(Personnel personnel, GestionPersonnel PageGestionPersonnel) {
-		lePersonnel = personnel;
-		laPageGestionPersonnel = PageGestionPersonnel;
-		
-		textFieldNom.setText(lePersonnel.getNom());
-		textFieldPrenom.setText(lePersonnel.getPrenom());
-		textFieldTel.setText(lePersonnel.getTel());
-		textFieldMail.setText(lePersonnel.getMail());
-		
+	public void AnnulerInsert() {
+		this.setVisible(false);
+		this.setEnabled(false);
+	}
+	public void insertInformations(GestionPersonnel PageGestionPersonnel) {
 		/*Recuperation services*/
 		laListService = AccesDonnees.requeteRecupService();
 		for(modele.Service leService : laListService) {
 			comboBoxService.addItem(leService.getNom());
 		}
-		int index;
-		comboBoxService.setSelectedIndex(lePersonnel.getService().getId()-1);
+		laPageGestionPersonnel = PageGestionPersonnel;
+		
 	}
 }

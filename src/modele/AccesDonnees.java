@@ -97,13 +97,12 @@ public abstract class AccesDonnees {
 		cn.reqUpdate(sql, lesParams);
 	}
 	
-	public static void requeteInsertPersonnel(ArrayList<String> nouvInformationsPersonnel, int idService) {
+	public static void requeteInsertPersonnel(ArrayList<String> informationsPersonnel, int idService) {
 		String sql = "insert into personnel(nom, prenom, tel, mail, idservice) values(?, ?, ?, ?, ?)";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
-		for(String param : nouvInformationsPersonnel) {
+		for(String param : informationsPersonnel) {
 			lesParams.add(param);
 		}
-		lesParams.add(nouvInformationsPersonnel);
 		lesParams.add(idService);
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn = ConnexionBDD.getInstance(url, login, pwd);

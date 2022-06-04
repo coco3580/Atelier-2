@@ -33,7 +33,8 @@ import java.awt.event.ActionEvent;
 public class GestionPersonnel extends JFrame {
 
 	private JPanel contentPane;
-	private FormModification leFormModification;
+	private FormModificationPersonnel leFormModification;
+	private FormAjouterPersonnel leFormAjouter;
 	private JList listePersonnel;
 	private JButton btnSuppPersonnel;
 	private JButton btnAjouterPersonnel;
@@ -93,6 +94,11 @@ public class GestionPersonnel extends JFrame {
 
 		/*Btn Ajouter Personnel*/
 		btnAjouterPersonnel = new JButton("Ajouter");
+		btnAjouterPersonnel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ajouterPersonnel();
+			}
+		});
 		btnAjouterPersonnel.setBounds(124, 347, 100, 28);
 		contentPane.add(btnAjouterPersonnel);
 		
@@ -131,7 +137,7 @@ public class GestionPersonnel extends JFrame {
 		listePersonnel.setModel(listModel);
 	}
 	private void modificationPersonnel() {
-		leFormModification = new FormModification();
+		leFormModification = new FormModificationPersonnel();
 		leFormModification.setVisible(true);
 		leFormModification.insertInformations(laListPersonnel.get(listePersonnel.getSelectedIndex()), this);
 	}
@@ -141,5 +147,10 @@ public class GestionPersonnel extends JFrame {
 			Controle.suppressionPersonnel(laListPersonnel.get(listePersonnel.getSelectedIndex()));
 			resetListPersonnel();
 		}
+	}
+	private void ajouterPersonnel() {
+		leFormAjouter = new FormAjouterPersonnel();
+		leFormAjouter.insertInformations(this);
+		leFormAjouter.setVisible(true);
 	}
 }
