@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 03 juin 2022 à 01:19
+-- Généré le : Dim 05 juin 2022 à 00:10
 -- Version du serveur :  8.0.21
 -- Version de PHP : 7.3.21
 
@@ -80,13 +80,13 @@ INSERT INTO `motif` (`idmotif`, `libelle`) VALUES
 
 DROP TABLE IF EXISTS `personnel`;
 CREATE TABLE IF NOT EXISTS `personnel` (
-  `idpersonnelle` int NOT NULL AUTO_INCREMENT,
+  `idpersonnel` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `prenom` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `tel` varchar(35) NOT NULL,
   `mail` varchar(128) NOT NULL,
   `idservice` int NOT NULL,
-  PRIMARY KEY (`idpersonnelle`),
+  PRIMARY KEY (`idpersonnel`),
   KEY `idservice` (`idservice`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `personnel` (
 -- Déchargement des données de la table `personnel`
 --
 
-INSERT INTO `personnel` (`idpersonnelle`, `nom`, `prenom`, `tel`, `mail`, `idservice`) VALUES
+INSERT INTO `personnel` (`idpersonnel`, `nom`, `prenom`, `tel`, `mail`, `idservice`) VALUES
 (1, 'Boyer', 'Tiger', '(573) 811-3252', 'sit.amet@aol.net', 1),
 (2, 'Dunn', ' Olivia\r\n', '(825) 718-5897', 'justo.nec.ante@google.com', 2),
 (3, 'Hobbs', 'Quentin', '1-856-938-8234', 'rutrum.non.hendrerit@google.ca', 1),
@@ -151,7 +151,7 @@ INSERT INTO `service` (`idservice`, `nom`) VALUES
 --
 ALTER TABLE `absence`
   ADD CONSTRAINT `absence_ibfk_2` FOREIGN KEY (`idmotif`) REFERENCES `motif` (`idmotif`) ON DELETE CASCADE,
-  ADD CONSTRAINT `absence_ibfk_3` FOREIGN KEY (`idpersonnelle`) REFERENCES `personnel` (`idpersonnelle`) ON DELETE CASCADE;
+  ADD CONSTRAINT `absence_ibfk_3` FOREIGN KEY (`idpersonnelle`) REFERENCES `personnel` (`idpersonnel`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `personnel`

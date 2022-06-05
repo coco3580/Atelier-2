@@ -31,7 +31,7 @@ public abstract class AccesDonnees {
 		cn.reqSelect(sql, null);
 		while (cn.read()) {
 			Service leService = new Service(Integer.parseInt(cn.field("service.idService").toString()), cn.field("service.nom").toString());
-			Personnel unPersonnel = new Personnel(Integer.parseInt(cn.field("personnel.idpersonnelle").toString()), cn.field("personnel.nom").toString(), cn.field("personnel.prenom").toString(), 
+			Personnel unPersonnel = new Personnel(Integer.parseInt(cn.field("personnel.idpersonnel").toString()), cn.field("personnel.nom").toString(), cn.field("personnel.prenom").toString(), 
 					cn.field("personnel.tel").toString(), cn.field("personnel.mail").toString(), leService);
 			lesPersonnels.add(unPersonnel);
 		}
@@ -41,7 +41,7 @@ public abstract class AccesDonnees {
 	
 	public static ArrayList<Personnel> requeteSuppressionPersonnel(Personnel lePersonnel) {
 		/*Supp personnel*/
-		String sql = "delete from personnel where idpersonnelle = ?";
+		String sql = "delete from personnel where idpersonnel = ?";
 		ArrayList<Object> lesParamsPersonnels = new ArrayList<Object>();
 		lesParamsPersonnels.add(lePersonnel.getId());
 		ArrayList<Personnel> lesPersonnels = new ArrayList<Personnel>();
@@ -49,7 +49,7 @@ public abstract class AccesDonnees {
 		cn.reqUpdate(sql, lesParamsPersonnels);
 		
 		/*Recup id motif des absence du personnel*/
-		sql = "select idmotif from absence where idpersonnelle = ?";
+		sql = "select idmotif from absence where idpersonnel = ?";
 		cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqSelect(sql, lesParamsPersonnels);
 		
@@ -65,7 +65,7 @@ public abstract class AccesDonnees {
 			cn.reqUpdate(sql, lesParamsMotifs);
 			
 			/*Supp absence*/
-			sql = "delete from absence where idpersonnelle = ?";
+			sql = "delete from absence where idpersonnel = ?";
 			cn = ConnexionBDD.getInstance(url, login, pwd);
 			cn.reqUpdate(sql, lesParamsPersonnels);
 		}
@@ -86,7 +86,7 @@ public abstract class AccesDonnees {
 		return lesServices;
 	}
 	public static void requeteModifierPersonnel(ArrayList<String> nouvInformationsPersonnel, int idService, int idPersonnel) {
-		String sql = "UPDATE personnel SET nom = ?, prenom = ?, tel = ?, mail = ?, idservice = ? WHERE idpersonnelle = ?";
+		String sql = "UPDATE personnel SET nom = ?, prenom = ?, tel = ?, mail = ?, idservice = ? WHERE idpersonnel = ?";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
 		for(String param : nouvInformationsPersonnel) {
 			lesParams.add(param);
