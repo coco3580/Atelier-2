@@ -39,6 +39,7 @@ public class GestionPersonnel extends JFrame {
 	private JButton btnSuppPersonnel;
 	private JButton btnAjouterPersonnel;
 	private JButton btnModifierPersonnel;
+	private JButton btnAbsence;
 	private ArrayList<Personnel> laListPersonnel;
 
 	/**
@@ -84,6 +85,7 @@ public class GestionPersonnel extends JFrame {
 	            int index = list.locationToIndex(evt.getPoint());
 	            btnSuppPersonnel.setEnabled(true);
 	            btnModifierPersonnel.setEnabled(true);
+	            btnAbsence.setEnabled(true);
 		    }
 		});
 		
@@ -99,7 +101,7 @@ public class GestionPersonnel extends JFrame {
 				ajouterPersonnel();
 			}
 		});
-		btnAjouterPersonnel.setBounds(124, 347, 100, 28);
+		btnAjouterPersonnel.setBounds(79, 347, 100, 28);
 		contentPane.add(btnAjouterPersonnel);
 		
 		/*Btn Modifier Personnel*/
@@ -110,7 +112,7 @@ public class GestionPersonnel extends JFrame {
 			}
 		});
 		btnModifierPersonnel.setEnabled(false);
-		btnModifierPersonnel.setBounds(268, 347, 100, 28);
+		btnModifierPersonnel.setBounds(208, 347, 100, 28);
 		contentPane.add(btnModifierPersonnel);
 		
 		/*Btn Supprimer Personnel*/
@@ -121,8 +123,19 @@ public class GestionPersonnel extends JFrame {
 			}
 		});
 		btnSuppPersonnel.setEnabled(false);
-		btnSuppPersonnel.setBounds(411, 347, 100, 28);
+		btnSuppPersonnel.setBounds(336, 347, 100, 28);
 		contentPane.add(btnSuppPersonnel);
+		
+		btnAbsence = new JButton("Absences");
+		btnAbsence.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				absencePersonnel();
+			}
+		});
+		btnAbsence.setForeground(new Color(106, 90, 205));
+		btnAbsence.setBackground(new Color(176, 196, 222));
+		btnAbsence.setBounds(463, 347, 100, 28);
+		contentPane.add(btnAbsence);
 		
 	}
 	public void resetListPersonnel() {
@@ -152,5 +165,8 @@ public class GestionPersonnel extends JFrame {
 		leFormAjouter = new FormAjouterPersonnel();
 		leFormAjouter.insertInformations(this);
 		leFormAjouter.setVisible(true);
+	}
+	private void absencePersonnel() {
+		
 	}
 }
