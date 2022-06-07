@@ -173,7 +173,7 @@ public class FormModificationPersonnel extends JFrame {
 		textFieldMail.setText(lePersonnel.getMail());
 		
 		/*Recuperation services*/
-		laListService = AccesDonnees.requeteRecupService();
+		laListService = Controle.recupService();
 		for(modele.Service leService : laListService) {
 			comboBoxService.addItem(leService.getNom());
 		}

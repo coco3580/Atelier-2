@@ -1,6 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public abstract class AccesDonnees {
 	private static String url = "jdbc:mysql://localhost/atelier2";
@@ -84,6 +85,22 @@ public abstract class AccesDonnees {
 		}
 		cn.close();
 		return lesServices;
+	}
+	public static ArrayList<Absence> requeteRecupAbsence(Personnel lePersonnel) {
+		/*Récupérer Absence*/
+		String sql = "select a.*, m.* from absence a join motif m on a.idpersonnel = m.idmotif where a.idmotif = ? ";
+		ArrayList<Object> lesParams = new ArrayList<Object>();
+		lesParams.add(lePersonnel.getId());
+		ArrayList<Absence> lesAbsences = new ArrayList<Absence>();
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqSelect(sql, lesParams);
+		while (cn.read()) {
+			Motif leMotif = new Motif(cn.field("m.libelle").toString());
+			Absence uneAbsence = new Absence((Date) cn.field("a.datedebut"), (Date) cn.field("a.datefin"), lePersonnel, leMotif);
+			lesAbsences.add(uneAbsence);
+		}
+		cn.close();
+		return lesAbsences;
 	}
 	public static void requeteModifierPersonnel(ArrayList<String> nouvInformationsPersonnel, int idService, int idPersonnel) {
 		String sql = "UPDATE personnel SET nom = ?, prenom = ?, tel = ?, mail = ?, idservice = ? WHERE idpersonnel = ?";

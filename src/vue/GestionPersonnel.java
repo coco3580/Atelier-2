@@ -177,5 +177,6 @@ public class GestionPersonnel extends JFrame {
 	private void absencePersonnel() {
 		leGestionAbsence = new GestionAbsence();
 		leGestionAbsence.setVisible(true);
+		leGestionAbsence.insertInformations(laListPersonnel.get(listePersonnel.getSelectedIndex()));
 	}
 }

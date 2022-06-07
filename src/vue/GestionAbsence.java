@@ -10,15 +10,28 @@ import javax.swing.JList;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
+
+import controleur.Controle;
+import modele.Absence;
+import modele.AccesDonnees;
+import modele.Personnel;
+
 import java.awt.SystemColor;
+import java.util.ArrayList;
 
 public class GestionAbsence extends JFrame {
+	
+	private JList listAbsences;
 
 	private JPanel contentPane;
+	private Personnel lePersonnel;
+	ArrayList<Absence> laListAbsences = new ArrayList<Absence>();
 
 	/**
 	 * Launch the application.
@@ -48,7 +61,7 @@ public class GestionAbsence extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JList listAbsences = new JList();
+		listAbsences = new JList();
 		listAbsences.setBorder(new LineBorder(new Color(0, 0, 0)));
 		listAbsences.setBounds(65, 54, 352, 284);
 		contentPane.add(listAbsences);
@@ -79,5 +92,17 @@ public class GestionAbsence extends JFrame {
 		btnTerminer.setForeground(new Color(0, 0, 205));
 		btnTerminer.setBounds(374, 349, 100, 28);
 		contentPane.add(btnTerminer);
+	}
+	
+	public void insertInformations(Personnel lePersonnel) {
+		lePersonnel = lePersonnel;
+
+		laListAbsences = Controle.recupAbsences(lePersonnel);
+		DefaultListModel listModel = new DefaultListModel();
+		for(Absence uneAbsence : laListAbsences) {
+			String absenceItem = uneAbsence.getMotif().getLibelle() + " du " + uneAbsence.getDateDebut() + " au " + uneAbsence.getDateFin();
+			listModel.addElement(absenceItem);
+		}
+		listAbsences.setModel(listModel);
 	}
 }

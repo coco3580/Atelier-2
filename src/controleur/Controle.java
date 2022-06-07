@@ -59,5 +59,8 @@ public class Controle {
 	public static void ajouterPersonnel(ArrayList<String> informationsPersonnel, int idService) {
 		AccesDonnees.requeteInsertPersonnel(informationsPersonnel, idService);
 	}
+	public static ArrayList<Absence> recupAbsences(Personnel lePersonnel) {
+		return AccesDonnees.requeteRecupAbsence(lePersonnel);
+	}
 
 }
