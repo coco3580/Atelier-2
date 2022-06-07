@@ -12,8 +12,11 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Color;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
+import java.awt.SystemColor;
 
-public class GestionRetard extends JFrame {
+public class GestionAbsence extends JFrame {
 
 	private JPanel contentPane;
 
@@ -24,7 +27,7 @@ public class GestionRetard extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GestionRetard frame = new GestionRetard();
+					GestionAbsence frame = new GestionAbsence();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,20 +39,22 @@ public class GestionRetard extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GestionRetard() {
+	public GestionAbsence() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 424);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(245, 255, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JList listAbsences = new JList();
+		listAbsences.setBorder(new LineBorder(new Color(0, 0, 0)));
 		listAbsences.setBounds(65, 54, 352, 284);
 		contentPane.add(listAbsences);
 		
 		JLabel lblAbsence = new JLabel("Absences");
-		lblAbsence.setForeground(new Color(0, 0, 128));
+		lblAbsence.setForeground(new Color(47, 79, 79));
 		lblAbsence.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblAbsence.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAbsence.setBounds(65, 11, 352, 32);
@@ -70,7 +75,7 @@ public class GestionRetard extends JFrame {
 		contentPane.add(btnSuppAbsence);
 		
 		JButton btnTerminer = new JButton("Terminer");
-		btnTerminer.setBackground(new Color(0, 0, 139));
+		btnTerminer.setBackground(SystemColor.menu);
 		btnTerminer.setForeground(new Color(0, 0, 205));
 		btnTerminer.setBounds(374, 349, 100, 28);
 		contentPane.add(btnTerminer);

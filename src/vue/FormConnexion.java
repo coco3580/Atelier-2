@@ -49,6 +49,7 @@ public class FormConnexion extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 494, 426);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(245, 255, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -61,6 +62,7 @@ public class FormConnexion extends JFrame {
 		contentPane.add(titreConnexionLabel);
 		
 		JPanel panelChampsConnexion = new JPanel();
+		panelChampsConnexion.setBackground(new Color(245, 255, 250));
 		panelChampsConnexion.setBorder(null);
 		panelChampsConnexion.setForeground(Color.LIGHT_GRAY);
 		panelChampsConnexion.setBounds(58, 92, 362, 268);

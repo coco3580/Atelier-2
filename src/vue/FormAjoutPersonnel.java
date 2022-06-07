@@ -22,8 +22,9 @@ import controleur.Controle;
 import modele.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
-public class FormAjouterPersonnel extends JFrame {
+public class FormAjoutPersonnel extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldNom;
@@ -41,6 +42,7 @@ public class FormAjouterPersonnel extends JFrame {
 	private Personnel lePersonnel;
 	private ArrayList<modele.Service> laListService;
 	private GestionPersonnel laPageGestionPersonnel;
+	private JLabel lblAjouterPersonnel;
 
 	/**
 	 * Launch the application.
@@ -49,7 +51,7 @@ public class FormAjouterPersonnel extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FormAjouterPersonnel frame = new FormAjouterPersonnel();
+					FormAjoutPersonnel frame = new FormAjoutPersonnel();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,10 +63,11 @@ public class FormAjouterPersonnel extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FormAjouterPersonnel() {
+	public FormAjoutPersonnel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 340);
+		setBounds(100, 100, 450, 398);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(245, 255, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -75,7 +78,7 @@ public class FormAjouterPersonnel extends JFrame {
 				confirmerInsert();
 			}
 		});
-		btnConfirmerModif.setBounds(69, 259, 100, 31);
+		btnConfirmerModif.setBounds(71, 306, 100, 31);
 		contentPane.add(btnConfirmerModif);
 		
 		JButton btnAnnulerModif = new JButton("Annuler");
@@ -84,62 +87,69 @@ public class FormAjouterPersonnel extends JFrame {
 				AnnulerInsert();
 			}
 		});
-		btnAnnulerModif.setBounds(258, 259, 100, 31);
+		btnAnnulerModif.setBounds(260, 306, 100, 31);
 		contentPane.add(btnAnnulerModif);
 		
 		textFieldNom = new JTextField();
-		textFieldNom.setBounds(152, 34, 178, 20);
+		textFieldNom.setBounds(154, 81, 178, 20);
 		contentPane.add(textFieldNom);
 		textFieldNom.setColumns(10);
 		
 		textFieldPrenom = new JTextField();
 		textFieldPrenom.setColumns(10);
-		textFieldPrenom.setBounds(152, 76, 178, 20);
+		textFieldPrenom.setBounds(154, 123, 178, 20);
 		contentPane.add(textFieldPrenom);
 		
 		textFieldTel = new JTextField();
 		textFieldTel.setColumns(10);
-		textFieldTel.setBounds(152, 118, 178, 20);
+		textFieldTel.setBounds(154, 165, 178, 20);
 		contentPane.add(textFieldTel);
 		
 		textFieldMail = new JTextField();
 		textFieldMail.setColumns(10);
-		textFieldMail.setBounds(152, 161, 178, 20);
+		textFieldMail.setBounds(154, 208, 178, 20);
 		contentPane.add(textFieldMail);
 		
 		comboBoxService = new JComboBox();
-		comboBoxService.setBounds(152, 203, 178, 20);
+		comboBoxService.setBounds(154, 250, 178, 20);
 		contentPane.add(comboBoxService);
 		
 		lblNom = new JLabel("Nom");
 		lblNom.setForeground(new Color(25, 25, 112));
 		lblNom.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNom.setBounds(85, 35, 46, 14);
+		lblNom.setBounds(87, 82, 46, 14);
 		contentPane.add(lblNom);
 		
 		lblPrenom = new JLabel("Prenom");
 		lblPrenom.setForeground(new Color(25, 25, 112));
 		lblPrenom.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblPrenom.setBounds(85, 79, 57, 14);
+		lblPrenom.setBounds(87, 126, 57, 14);
 		contentPane.add(lblPrenom);
 		
 		lblTel = new JLabel("Tel");
 		lblTel.setForeground(new Color(25, 25, 112));
 		lblTel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblTel.setBounds(85, 121, 57, 14);
+		lblTel.setBounds(87, 168, 57, 14);
 		contentPane.add(lblTel);
 		
 		lblMail = new JLabel("Mail");
 		lblMail.setForeground(new Color(25, 25, 112));
 		lblMail.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblMail.setBounds(85, 164, 57, 14);
+		lblMail.setBounds(87, 211, 57, 14);
 		contentPane.add(lblMail);
 		
 		lblService = new JLabel("Service");
 		lblService.setForeground(new Color(25, 25, 112));
 		lblService.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblService.setBounds(85, 206, 57, 14);
+		lblService.setBounds(87, 253, 57, 14);
 		contentPane.add(lblService);
+		
+		lblAjouterPersonnel = new JLabel("Ajouter un personnel");
+		lblAjouterPersonnel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAjouterPersonnel.setForeground(new Color(47, 79, 79));
+		lblAjouterPersonnel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblAjouterPersonnel.setBounds(128, 31, 221, 22);
+		contentPane.add(lblAjouterPersonnel);
 	}
 	public void confirmerInsert() {
 		ArrayList<String> informationsPersonnel = new ArrayList<String>();

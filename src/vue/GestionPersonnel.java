@@ -29,12 +29,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 
 public class GestionPersonnel extends JFrame {
 
 	private JPanel contentPane;
 	private FormModificationPersonnel leFormModification;
-	private FormAjouterPersonnel leFormAjouter;
+	private FormAjoutPersonnel leFormAjouter;
+	private GestionAbsence leGestionAbsence;
 	private JList listePersonnel;
 	private JButton btnSuppPersonnel;
 	private JButton btnAjouterPersonnel;
@@ -63,21 +67,23 @@ public class GestionPersonnel extends JFrame {
 	 */
 	public GestionPersonnel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 659, 436);
+		setBounds(100, 100, 659, 441);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(245, 255, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel titreGestionPersonnel = new JLabel("Gestion du personnel");
-		titreGestionPersonnel.setForeground(SystemColor.textHighlight);
-		titreGestionPersonnel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		titreGestionPersonnel.setForeground(new Color(47, 79, 79));
+		titreGestionPersonnel.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		titreGestionPersonnel.setHorizontalAlignment(SwingConstants.CENTER);
-		titreGestionPersonnel.setBounds(158, 0, 326, 86);
+		titreGestionPersonnel.setBounds(158, 0, 326, 72);
 		contentPane.add(titreGestionPersonnel);
 
 		/*List personnel*/
 		listePersonnel = new JList();
+		listePersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		listePersonnel.setForeground(SystemColor.controlDkShadow);
 		listePersonnel.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
@@ -89,7 +95,7 @@ public class GestionPersonnel extends JFrame {
 		    }
 		});
 		
-		listePersonnel.setBounds(79, 88, 484, 248);
+		listePersonnel.setBounds(79, 75, 484, 266);
 		resetListPersonnel();
 		contentPane.add(listePersonnel);
 		
@@ -101,7 +107,7 @@ public class GestionPersonnel extends JFrame {
 				ajouterPersonnel();
 			}
 		});
-		btnAjouterPersonnel.setBounds(79, 347, 100, 28);
+		btnAjouterPersonnel.setBounds(79, 358, 100, 28);
 		contentPane.add(btnAjouterPersonnel);
 		
 		/*Btn Modifier Personnel*/
@@ -112,7 +118,7 @@ public class GestionPersonnel extends JFrame {
 			}
 		});
 		btnModifierPersonnel.setEnabled(false);
-		btnModifierPersonnel.setBounds(208, 347, 100, 28);
+		btnModifierPersonnel.setBounds(208, 358, 100, 28);
 		contentPane.add(btnModifierPersonnel);
 		
 		/*Btn Supprimer Personnel*/
@@ -123,18 +129,20 @@ public class GestionPersonnel extends JFrame {
 			}
 		});
 		btnSuppPersonnel.setEnabled(false);
-		btnSuppPersonnel.setBounds(336, 347, 100, 28);
+		btnSuppPersonnel.setBounds(336, 358, 100, 28);
 		contentPane.add(btnSuppPersonnel);
 		
 		btnAbsence = new JButton("Absences");
+		btnAbsence.setEnabled(false);
+		btnAbsence.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnAbsence.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				absencePersonnel();
 			}
 		});
-		btnAbsence.setForeground(new Color(106, 90, 205));
-		btnAbsence.setBackground(new Color(176, 196, 222));
-		btnAbsence.setBounds(463, 347, 100, 28);
+		btnAbsence.setForeground(new Color(60, 179, 113));
+		btnAbsence.setBackground(SystemColor.menu);
+		btnAbsence.setBounds(463, 358, 100, 28);
 		contentPane.add(btnAbsence);
 		
 	}
@@ -162,11 +170,12 @@ public class GestionPersonnel extends JFrame {
 		}
 	}
 	private void ajouterPersonnel() {
-		leFormAjouter = new FormAjouterPersonnel();
+		leFormAjouter = new FormAjoutPersonnel();
 		leFormAjouter.insertInformations(this);
 		leFormAjouter.setVisible(true);
 	}
 	private void absencePersonnel() {
-		
+		leGestionAbsence = new GestionAbsence();
+		leGestionAbsence.setVisible(true);
 	}
 }
