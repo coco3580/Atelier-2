@@ -49,6 +49,9 @@ public class Controle {
 	public static void suppressionPersonnel(Personnel lePersonnel) {
 		AccesDonnees.requeteSuppressionPersonnel(lePersonnel);
 	}
+	public static void suppressionAbsence(Absence uneAbsence) {
+		AccesDonnees.requetesuppressionAbsence(uneAbsence);
+	}
 	
 	public static ArrayList<Service> recupService() {
 		return AccesDonnees.requeteRecupService();

@@ -150,4 +150,16 @@ public abstract class AccesDonnees {
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqUpdate(sql, lesParams);
 	}
+	public static void requetesuppressionAbsence(Absence uneAbsence) {
+		/*Supp Absence*/
+		String sql = "delete from absence where idpersonnel = ? AND idmotif = ? AND datedebut = ? AND datefin = ?";
+		ArrayList<Object> lesParams = new ArrayList<Object>();
+		lesParams.add(uneAbsence.getPersonnel().getId());
+		lesParams.add(uneAbsence.getMotif().getIdMotif());
+		lesParams.add(uneAbsence.getDateDebut());
+		lesParams.add(uneAbsence.getDateFin());
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqUpdate(sql, lesParams);
+		cn.close();
+	}
 }

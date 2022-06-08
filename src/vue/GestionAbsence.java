@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -102,6 +103,11 @@ public class GestionAbsence extends JFrame {
 		contentPane.add(btnModifierAbsence);
 		
 		btnSuppAbsence = new JButton("Supprimer");
+		btnSuppAbsence.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				suppressionAbsence();
+			}
+		});
 		btnSuppAbsence.setEnabled(false);
 		btnSuppAbsence.setBounds(253, 349, 100, 28);
 		contentPane.add(btnSuppAbsence);
@@ -146,5 +152,12 @@ public class GestionAbsence extends JFrame {
 		}
 		listAbsences.setModel(listModel);
 		
+	}
+	private void suppressionAbsence() {
+		int confirmInput = JOptionPane.showConfirmDialog(null, "Supprimer ce personnel?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+		if(confirmInput == 0) {
+			Controle.suppressionAbsence(laListAbsences.get(listAbsences.getSelectedIndex()));
+			resetListAbsence();
+		}
 	}
 }
