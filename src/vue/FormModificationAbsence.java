@@ -4,22 +4,38 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import controleur.Controle;
+import modele.Absence;
+import modele.Motif;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FormModificationAbsence extends JFrame {
 
 	private JPanel contentPane;
+	private JSpinner spinnerDateDebut;
+	private JSpinner spinnerDateFin;
+	private Absence uneAbsence;
+	private JComboBox comboBoxMotif;
+	private ArrayList<Motif> laListMotifs;
+	private GestionAbsence laPageGestionAbsence;
 
 	/**
 	 * Launch the application.
@@ -49,7 +65,7 @@ public class FormModificationAbsence extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JComboBox comboBoxMotif = new JComboBox();
+		comboBoxMotif = new JComboBox();
 		comboBoxMotif.setBounds(167, 186, 133, 22);
 		contentPane.add(comboBoxMotif);
 		
@@ -59,25 +75,37 @@ public class FormModificationAbsence extends JFrame {
 		lblMotif.setBounds(167, 153, 133, 22);
 		contentPane.add(lblMotif);
 		
-		JButton btnTerminer = new JButton("Terminer");
-		btnTerminer.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnTerminer.setBounds(96, 246, 100, 27);
-		contentPane.add(btnTerminer);
+		JButton btnValider = new JButton("Valider");
+		btnValider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				confirmerModif();
+			}
+		});
+		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnValider.setBounds(96, 246, 100, 27);
+		contentPane.add(btnValider);
 		
 		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AnnulerModif();
+			}
+		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnAnnuler.setBounds(274, 246, 100, 27);
 		contentPane.add(btnAnnuler);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerDateModel(new Date(1654034400000L), null, null, Calendar.DAY_OF_YEAR));
-		spinner.setBounds(117, 101, 84, 20);
-		contentPane.add(spinner);
+		spinnerDateDebut = new JSpinner();
+		spinnerDateDebut.setModel(new SpinnerDateModel(new Date(1654034400628L), null, null, Calendar.DAY_OF_YEAR));
+		spinnerDateDebut.setEditor(new JSpinner.DateEditor(spinnerDateDebut, "y:M:d"));
+		spinnerDateDebut.setBounds(117, 101, 84, 20);
+		contentPane.add(spinnerDateDebut);
 		
-		JSpinner spinnerAnnee = new JSpinner();
-		spinnerAnnee.setModel(new SpinnerDateModel(new Date(1654034400000L), null, null, Calendar.DAY_OF_YEAR));
-		spinnerAnnee.setBounds(274, 101, 84, 20);
-		contentPane.add(spinnerAnnee);
+		spinnerDateFin = new JSpinner();
+		spinnerDateFin.setModel(new SpinnerDateModel(new Date(1654034400794L), null, null, Calendar.DAY_OF_YEAR));
+		spinnerDateFin.setEditor(new JSpinner.DateEditor(spinnerDateFin, "y:M:d"));
+		spinnerDateFin.setBounds(274, 101, 84, 20);
+		contentPane.add(spinnerDateFin);
 		
 		JLabel lblModification = new JLabel("Modifier une absence");
 		lblModification.setForeground(new Color(47, 79, 79));
@@ -99,5 +127,39 @@ public class FormModificationAbsence extends JFrame {
 		contentPane.add(lblDateFin);
 
 	}
-
+	public void insertInformations(Absence absence, GestionAbsence leGestionAbsence){
+		uneAbsence = absence;
+		laPageGestionAbsence = leGestionAbsence;
+		spinnerDateDebut.setValue(uneAbsence.getDateDebut());
+		spinnerDateFin.setValue(uneAbsence.getDateFin());
+		
+		laListMotifs = Controle.recupMotif();
+		for(modele.Motif leMotif : laListMotifs) {
+			comboBoxMotif.addItem(leMotif.getLibelle());
+		}
+		int index;
+		comboBoxMotif.setSelectedIndex(uneAbsence.getMotif().getIdMotif()-1);
+	}
+	public void AnnulerModif() {
+		this.setVisible(false);
+		this.setEnabled(false);
+	}
+	public void confirmerModif() {
+		int confirmInput = JOptionPane.showConfirmDialog(null, "Confirmer les modifications?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+		if(confirmInput == 0) {
+			ArrayList<Object> nouvInformationsPersonnel = new ArrayList<Object>();
+			nouvInformationsPersonnel.add(spinnerDateDebut.getValue());
+			nouvInformationsPersonnel.add(spinnerDateFin.getValue());
+			for(Motif leMotif : laListMotifs) {
+				if(leMotif.getLibelle() == comboBoxMotif.getSelectedItem().toString()) {
+					nouvInformationsPersonnel.add(leMotif.getIdMotif());
+				}
+			}
+			Controle.modifierAbsence(nouvInformationsPersonnel, uneAbsence);
+			
+			this.laPageGestionAbsence.resetListAbsence();
+			this.setVisible(false);
+			this.setEnabled(false);
+		}
+	}
 }

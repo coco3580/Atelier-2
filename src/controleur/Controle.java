@@ -62,5 +62,11 @@ public class Controle {
 	public static ArrayList<Absence> recupAbsences(Personnel lePersonnel) {
 		return AccesDonnees.requeteRecupAbsence(lePersonnel);
 	}
+	public static ArrayList<Motif> recupMotif() {
+		return AccesDonnees.requeteRecupMotif();
+	}
+	public static void modifierAbsence(ArrayList<Object> nouvInformationsPersonnel, Absence uneAbsence) {
+		AccesDonnees.requeteModifierAbsence(nouvInformationsPersonnel, uneAbsence);
+	}
 
 }

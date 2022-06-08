@@ -88,14 +88,14 @@ public abstract class AccesDonnees {
 	}
 	public static ArrayList<Absence> requeteRecupAbsence(Personnel lePersonnel) {
 		/*Récupérer Absence*/
-		String sql = "select a.*, m.* from absence a join motif m on a.idpersonnel = m.idmotif where a.idmotif = ? ";
+		String sql = "select a.*, m.* from absence a join motif m on a.idmotif = m.idmotif where a.idpersonnel = ? order by a.datedebut, a.datefin";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
 		lesParams.add(lePersonnel.getId());
 		ArrayList<Absence> lesAbsences = new ArrayList<Absence>();
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqSelect(sql, lesParams);
 		while (cn.read()) {
-			Motif leMotif = new Motif(cn.field("m.libelle").toString());
+			Motif leMotif = new Motif(Integer.parseInt(cn.field("m.idmotif").toString()), cn.field("m.libelle").toString());
 			Absence uneAbsence = new Absence((Date) cn.field("a.datedebut"), (Date) cn.field("a.datefin"), lePersonnel, leMotif);
 			lesAbsences.add(uneAbsence);
 		}
@@ -123,6 +123,31 @@ public abstract class AccesDonnees {
 		lesParams.add(idService);
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqUpdate(sql, lesParams);
+	}
+	public static ArrayList<Motif> requeteRecupMotif() {
+		String sql = "select * from motif";
+		ArrayList<Motif> lesMotifs = new ArrayList<Motif>();
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqSelect(sql, null);
+		while (cn.read()) {
+			Motif leMotif = new Motif(Integer.parseInt(cn.field("idmotif").toString()), cn.field("libelle").toString());
+			lesMotifs.add(leMotif);
+		}
+		cn.close();
+		return lesMotifs;
+	}
+	public static void requeteModifierAbsence(ArrayList<Object> nouvInformationsPersonnel, Absence uneAbsence) {
+		String sql = "UPDATE absence SET datedebut = ?, datefin = ?, idmotif = ? WHERE idpersonnel = ? AND idmotif = ? AND datedebut = ? AND datefin = ?";
+		ArrayList<Object> lesParams = new ArrayList<Object>();
+		for(Object param : nouvInformationsPersonnel) {
+			lesParams.add(param);
+		}
+		lesParams.add(uneAbsence.getPersonnel().getId());
+		lesParams.add(uneAbsence.getMotif().getIdMotif());
+		lesParams.add(uneAbsence.getDateDebut());
+		lesParams.add(uneAbsence.getDateFin());
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqUpdate(sql, lesParams);
 	}
 }
