@@ -1,6 +1,5 @@
 package vue;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -15,13 +14,10 @@ import java.awt.Font;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.Color;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
 import controleur.Controle;
 import modele.Absence;
-import modele.AccesDonnees;
-import modele.Motif;
 import modele.Personnel;
 
 import java.awt.SystemColor;
@@ -31,9 +27,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class GestionAbsence extends JFrame {
 	
-	private JList listAbsences;
+	private JList<String> listAbsences;
 	private JButton btnModifierAbsence;
 	private JButton btnAjouterAbsence;
 	private JButton btnSuppAbsence;
@@ -72,13 +69,13 @@ public class GestionAbsence extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		listAbsences = new JList();
+		listAbsences = new JList<String>();
 		listAbsences.setBorder(new LineBorder(new Color(0, 0, 0)));
 		listAbsences.setBounds(65, 54, 352, 284);
 		contentPane.add(listAbsences);
 		listAbsences.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
-		        activeElements(evt);
+		        activeBouton();
 		    }
 		});
 		
@@ -129,29 +126,47 @@ public class GestionAbsence extends JFrame {
 		btnTerminer.setBounds(374, 349, 100, 28);
 		contentPane.add(btnTerminer);
 	}
-	
+
+	/**
+	 * Recupere une instance Personnel.
+	 * param unPersonnel
+	 */
 	public void insertInformations(Personnel unPersonnel) {
 		lePersonnel = unPersonnel;
 		resetListAbsence();
 	}
+
+	/**
+	 * Ferme la frame.
+	 */
 	public void Terminer() {
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
+
+	/**
+	 * Ouvre une frame FormModificationAbsence.
+	 */
 	private void modificationAbsence() {
 		leFormModification = new FormModificationAbsence();
 		leFormModification.setVisible(true);
 		leFormModification.insertInformations(laListAbsences.get(listAbsences.getSelectedIndex()), this);
 	}
-	private void activeElements(MouseEvent evt) {
-		JList list = (JList)evt.getSource();
-        int index = list.locationToIndex(evt.getPoint());
+
+	/**
+	 * Active les bouton btnModifierAbsence et btnSuppAbsence
+	 */
+	private void activeBouton() {
         btnModifierAbsence.setEnabled(true);
         btnSuppAbsence.setEnabled(true);
 	}
+
+	/**
+	 * Recharge la liste des absences.
+	 */
 	public void resetListAbsence() {
-		laListAbsences = Controle.recupAbsences(lePersonnel);
-		DefaultListModel listModel = new DefaultListModel();
+		laListAbsences = Controle.getListAbsences(lePersonnel);
+		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		for(Absence uneAbsence : laListAbsences) {
 			String absenceItem = uneAbsence.getMotif().getLibelle() + " du " + uneAbsence.getDateDebut() + " au " + uneAbsence.getDateFin();
 			listModel.addElement(absenceItem);
@@ -159,13 +174,21 @@ public class GestionAbsence extends JFrame {
 		listAbsences.setModel(listModel);
 		
 	}
+
+	/**
+	 * Supprime une absence dans la bdd.
+	 */
 	private void suppressionAbsence() {
 		int confirmInput = JOptionPane.showConfirmDialog(null, "Supprimer ce personnel?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 		if(confirmInput == 0) {
-			Controle.suppressionAbsence(laListAbsences.get(listAbsences.getSelectedIndex()));
+			Controle.supprimerAbsence(laListAbsences.get(listAbsences.getSelectedIndex()));
 			resetListAbsence();
 		}
 	}
+
+	/**
+	 * Ouvre une frame FormAjouterAbsence.
+	 */
 	private void ajouterAbsence() {
 		leFormAjouter = new FormAjoutAbsence();
 		leFormAjouter.insertInformations(lePersonnel, this);

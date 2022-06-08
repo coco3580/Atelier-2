@@ -4,7 +4,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ConnexionBDD {
 	private static ConnexionBDD instance = null;

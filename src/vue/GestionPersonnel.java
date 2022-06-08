@@ -1,6 +1,5 @@
 package vue;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,7 +9,6 @@ import javax.swing.border.EmptyBorder;
 import controleur.Controle;
 import modele.Personnel;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -23,28 +21,27 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
+@SuppressWarnings("serial")
 public class GestionPersonnel extends JFrame {
 
 	private JPanel contentPane;
-	private FormModificationPersonnel leFormModification;
-	private FormAjoutPersonnel leFormAjouter;
-	private GestionAbsence leGestionAbsence;
-	private JList listePersonnel;
+	private JList<String> listePersonnel;
 	private JButton btnSuppPersonnel;
 	private JButton btnAjouterPersonnel;
 	private JButton btnModifierPersonnel;
 	private JButton btnAbsence;
+	
 	private ArrayList<Personnel> laListPersonnel;
+	
+	private FormModificationPersonnel leFormModification;
+	private FormAjoutPersonnel leFormAjouter;
+	private GestionAbsence leGestionAbsence;
 
 	/**
 	 * Launch the application.
@@ -82,16 +79,12 @@ public class GestionPersonnel extends JFrame {
 		contentPane.add(titreGestionPersonnel);
 
 		/*List personnel*/
-		listePersonnel = new JList();
+		listePersonnel = new JList<String>();
 		listePersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		listePersonnel.setForeground(SystemColor.controlDkShadow);
 		listePersonnel.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
-		        JList list = (JList)evt.getSource();
-	            int index = list.locationToIndex(evt.getPoint());
-	            btnSuppPersonnel.setEnabled(true);
-	            btnModifierPersonnel.setEnabled(true);
-	            btnAbsence.setEnabled(true);
+		    	enableBouton();
 		    }
 		});
 		
@@ -146,10 +139,14 @@ public class GestionPersonnel extends JFrame {
 		contentPane.add(btnAbsence);
 		
 	}
+
+	/**
+	 * Recharge la liste des absences.
+	 */
 	public void resetListPersonnel() {
-		laListPersonnel = new ArrayList();
-		laListPersonnel = Controle.listPersonnel();
-		DefaultListModel listModel = new DefaultListModel();
+		laListPersonnel = new ArrayList<Personnel>();
+		laListPersonnel = Controle.getListPersonnel();
+		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		for(Personnel lePersonnel : laListPersonnel) {
 			String personnel = lePersonnel.getPrenom()+ " " + lePersonnel.getNom() + " - " + lePersonnel.getTel() + " - " + lePersonnel.getMail() +
 					 " - " + lePersonnel.getService().getNom();
@@ -157,26 +154,51 @@ public class GestionPersonnel extends JFrame {
 		};
 		listePersonnel.setModel(listModel);
 	}
+
+	/**
+	 * Ouvre une frame FormModificationPersonnel.
+	 */
 	private void modificationPersonnel() {
 		leFormModification = new FormModificationPersonnel();
 		leFormModification.setVisible(true);
 		leFormModification.insertInformations(laListPersonnel.get(listePersonnel.getSelectedIndex()), this);
 	}
+
+	/**
+	 * Supprime un personnel dans la bdd.
+	 */
 	private void suppressionPersonnel() {
 		int confirmInput = JOptionPane.showConfirmDialog(null, "Supprimer ce personnel?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 		if(confirmInput == 0) {
-			Controle.suppressionPersonnel(laListPersonnel.get(listePersonnel.getSelectedIndex()));
+			Controle.supprimerPersonnel(laListPersonnel.get(listePersonnel.getSelectedIndex()));
 			resetListPersonnel();
 		}
 	}
+
+	/**
+	 * Ouvre une frame FormAjoutPersonnel.
+	 */
 	private void ajouterPersonnel() {
 		leFormAjouter = new FormAjoutPersonnel();
 		leFormAjouter.insertInformations(this);
 		leFormAjouter.setVisible(true);
 	}
+
+	/**
+	 * Ouvre une frame GestionAbsence.
+	 */
 	private void absencePersonnel() {
 		leGestionAbsence = new GestionAbsence();
 		leGestionAbsence.setVisible(true);
 		leGestionAbsence.insertInformations(laListPersonnel.get(listePersonnel.getSelectedIndex()));
+	}
+
+	/**
+	 * Active les bouton btnSuppPersonnel, btnModifierPersonnel et btnAbsence
+	 */
+	private void enableBouton() {
+		btnSuppPersonnel.setEnabled(true);
+        btnModifierPersonnel.setEnabled(true);
+        btnAbsence.setEnabled(true);
 	}
 }

@@ -1,6 +1,5 @@
 package vue;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -9,21 +8,21 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
-import java.security.Provider.Service;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.awt.Color;
 import javax.swing.JComboBox;
 
 import controleur.Controle;
-import modele.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
+/**
+ * class Controle
+ * @author Corentin Dufeu
+ */
+@SuppressWarnings("serial")
 public class FormAjoutPersonnel extends JFrame {
 
 	private JPanel contentPane;
@@ -38,10 +37,10 @@ public class FormAjoutPersonnel extends JFrame {
 	private JLabel lblMail;
 	private JLabel lblService;
 	private JLabel lblAjouterPersonnel;
+	private JLabel erreurChampVideLabel;
 	private JButton btnConfirmerModif;
 	private JButton btnAnnulerModif;
-
-	private Personnel lePersonnel;
+	
 	private GestionPersonnel laPageGestionPersonnel;
 	
 	private ArrayList<modele.Service> laListService;
@@ -153,14 +152,45 @@ public class FormAjoutPersonnel extends JFrame {
 		lblAjouterPersonnel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAjouterPersonnel.setBounds(128, 31, 221, 22);
 		contentPane.add(lblAjouterPersonnel);
+		
+		erreurChampVideLabel = new JLabel("");
+		erreurChampVideLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		erreurChampVideLabel.setForeground(Color.RED);
+		erreurChampVideLabel.setBounds(83, 281, 249, 14);
+		contentPane.add(erreurChampVideLabel);
 	}
-	
+
+	/**
+	 * Recupere des informations.
+	 * @param PageGestionPersonnel
+	 */
+	public void insertInformations(GestionPersonnel PageGestionPersonnel) {
+		laListService = Controle.getListService();
+		for(modele.Service leService : laListService) {
+			comboBoxService.addItem(leService.getNom());
+		}
+		laPageGestionPersonnel = PageGestionPersonnel;
+	}
+
+	/**
+	 * Insert les donnees dans la bdd et ferme la frame.
+	 */
 	public void confirmerInsert() {
+		
+		ArrayList<String> champs = new ArrayList<String>();
 		ArrayList<String> informationsPersonnel = new ArrayList<String>();
-		informationsPersonnel.add(textFieldNom.getText());
-		informationsPersonnel.add(textFieldPrenom.getText());
-		informationsPersonnel.add(textFieldTel.getText());
-		informationsPersonnel.add(textFieldMail.getText());
+		champs.add(textFieldNom.getText());
+		champs.add(textFieldPrenom.getText());
+		champs.add(textFieldTel.getText());
+		champs.add(textFieldMail.getText());
+		
+		for(String champ : champs) {
+			if("".equals(champ)) {
+				erreurChampVideLabel.setText("Veuillez rentrer tous les champs");
+				return;
+			}
+			informationsPersonnel.add(champ);
+		}
 		
 		String servicePersonnel = (String) comboBoxService.getSelectedItem();
 		for(modele.Service service : laListService) {
@@ -174,18 +204,12 @@ public class FormAjoutPersonnel extends JFrame {
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
-	
+
+	/**
+	 * Ferme la frame.
+	 */
 	public void AnnulerInsert() {
 		this.setVisible(false);
 		this.setEnabled(false);
-	}
-	
-	public void insertInformations(GestionPersonnel PageGestionPersonnel) {
-		/*Recuperation services*/
-		laListService = AccesDonnees.requeteRecupService();
-		for(modele.Service leService : laListService) {
-			comboBoxService.addItem(leService.getNom());
-		}
-		laPageGestionPersonnel = PageGestionPersonnel;
 	}
 }

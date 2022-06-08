@@ -1,14 +1,11 @@
 package vue;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -17,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -27,15 +23,24 @@ import modele.Motif;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class FormModificationAbsence extends JFrame {
 
 	private JPanel contentPane;
 	private JSpinner spinnerDateDebut;
 	private JSpinner spinnerDateFin;
+	private JComboBox<String> comboBoxMotif;
+	private JLabel lblDateFin;
+	private JLabel lblDateDebut;
+	private JLabel lblModification;
+	private JLabel lblMotif;
+	private JButton btnAnnuler;
+	private JButton btnValider;
+
 	private Absence uneAbsence;
-	private JComboBox comboBoxMotif;
-	private ArrayList<Motif> laListMotifs;
 	private GestionAbsence laPageGestionAbsence;
+	
+	private ArrayList<Motif> laListMotifs;
 
 	/**
 	 * Launch the application.
@@ -65,17 +70,17 @@ public class FormModificationAbsence extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		comboBoxMotif = new JComboBox();
+		comboBoxMotif = new JComboBox<String>();
 		comboBoxMotif.setBounds(167, 186, 133, 22);
 		contentPane.add(comboBoxMotif);
 		
-		JLabel lblMotif = new JLabel("Choisir un motif");
+		lblMotif = new JLabel("Choisir un motif");
 		lblMotif.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblMotif.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMotif.setBounds(167, 153, 133, 22);
 		contentPane.add(lblMotif);
 		
-		JButton btnValider = new JButton("Valider");
+		btnValider = new JButton("Valider");
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				confirmerModif();
@@ -85,7 +90,7 @@ public class FormModificationAbsence extends JFrame {
 		btnValider.setBounds(96, 246, 100, 27);
 		contentPane.add(btnValider);
 		
-		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AnnulerModif();
@@ -107,42 +112,56 @@ public class FormModificationAbsence extends JFrame {
 		spinnerDateFin.setBounds(274, 101, 84, 20);
 		contentPane.add(spinnerDateFin);
 		
-		JLabel lblModification = new JLabel("Modifier une absence");
+		lblModification = new JLabel("Modifier une absence");
 		lblModification.setForeground(new Color(47, 79, 79));
 		lblModification.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblModification.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModification.setBounds(123, 30, 221, 22);
 		contentPane.add(lblModification);
 		
-		JLabel lblDateDebut = new JLabel("Date debut");
+		lblDateDebut = new JLabel("Date debut");
 		lblDateDebut.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDateDebut.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblDateDebut.setBounds(117, 76, 79, 14);
 		contentPane.add(lblDateDebut);
 		
-		JLabel lblDateFin = new JLabel("Date fin");
+		lblDateFin = new JLabel("Date fin");
 		lblDateFin.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDateFin.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblDateFin.setBounds(274, 76, 79, 14);
 		contentPane.add(lblDateFin);
 
 	}
+	
+	/**
+	 * Recupere des informations.
+	 * param absence
+	 * param leGestionAbsence
+	 */
 	public void insertInformations(Absence absence, GestionAbsence leGestionAbsence){
 		uneAbsence = absence;
 		laPageGestionAbsence = leGestionAbsence;
 		spinnerDateDebut.setValue(uneAbsence.getDateDebut());
 		spinnerDateFin.setValue(uneAbsence.getDateFin());
 		
-		laListMotifs = Controle.recupMotif();
+		laListMotifs = Controle.getListMotif();
 		for(modele.Motif leMotif : laListMotifs) {
 			comboBoxMotif.addItem(leMotif.getLibelle());
 		}
 		comboBoxMotif.setSelectedIndex(uneAbsence.getMotif().getIdMotif()-1);
 	}
+	
+	/**
+	 * Ferme la frame.
+	 */
 	public void AnnulerModif() {
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
+	
+	/**
+	 * insert les modifs dans la bdd et ferme la frame.
+	 */
 	public void confirmerModif() {
 		int confirmInput = JOptionPane.showConfirmDialog(null, "Confirmer les modifications?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 		if(confirmInput == 0) {
@@ -154,7 +173,7 @@ public class FormModificationAbsence extends JFrame {
 					nouvInformationsPersonnel.add(leMotif.getIdMotif());
 				}
 			}
-			Controle.modifierAbsence(nouvInformationsPersonnel, uneAbsence);
+			Controle.setAbsence(nouvInformationsPersonnel, uneAbsence);
 			
 			this.laPageGestionAbsence.resetListAbsence();
 			this.setVisible(false);

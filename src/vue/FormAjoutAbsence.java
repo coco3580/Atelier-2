@@ -1,6 +1,5 @@
 package vue;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,8 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controleur.Controle;
-import modele.Absence;
-import modele.AccesDonnees;
 import modele.Motif;
 import modele.Personnel;
 
@@ -27,10 +24,15 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * class de gestion de l'ajout d'une absence
+ * @author Corentin Dufeu
+ */
+@SuppressWarnings("serial")
 public class FormAjoutAbsence extends JFrame {
 
 	private JPanel contentPane;
-	private JComboBox comboBoxMotif;
+	private JComboBox<String> comboBoxMotif;
 	private JSpinner spinnerDateDebut;
 	private JSpinner spinnerDateFin;
 	private JLabel lblMotif;
@@ -73,7 +75,7 @@ public class FormAjoutAbsence extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		comboBoxMotif = new JComboBox();
+		comboBoxMotif = new JComboBox<String>();
 		comboBoxMotif.setBounds(167, 186, 133, 22);
 		contentPane.add(comboBoxMotif);
 		
@@ -134,23 +136,36 @@ public class FormAjoutAbsence extends JFrame {
 		lblDateFin.setBounds(274, 76, 79, 14);
 		contentPane.add(lblDateFin);
 	}
-	
+
+	/**
+	 * Ferme la frame.
+	 */
 	public void AnnulerInsert() {
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
 	
+	/**
+	 * Recupere des informations.
+	 * @param unPersonnel
+	 * @param leGestionAbsence
+	 */
 	public void insertInformations(Personnel unPersonnel, GestionAbsence leGestionAbsence){
+		
 		lePersonnel = unPersonnel;
 		laPageGestionAbsence = leGestionAbsence;
 		
-		laListMotifs = Controle.recupMotif();
+		laListMotifs = Controle.getListMotif();
 		for(modele.Motif leMotif : laListMotifs) {
 			comboBoxMotif.addItem(leMotif.getLibelle());
 		}
 	}
 	
+	/**
+	 * Insert les donnees dans la bdd et ferme la frame.
+	 */
 	public void confirmerInsert() {
+
 		ArrayList<Object> nouvInformationsAbsence = new ArrayList<Object>();
 		nouvInformationsAbsence.add(spinnerDateDebut.getValue());
 		nouvInformationsAbsence.add(spinnerDateFin.getValue());

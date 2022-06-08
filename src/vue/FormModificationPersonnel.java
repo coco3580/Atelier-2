@@ -1,6 +1,5 @@
 package vue;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -12,9 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import java.security.Provider.Service;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.awt.Color;
 import javax.swing.JComboBox;
 
@@ -22,7 +19,9 @@ import controleur.Controle;
 import modele.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class FormModificationPersonnel extends JFrame {
 
 	private JPanel contentPane;
@@ -30,17 +29,20 @@ public class FormModificationPersonnel extends JFrame {
 	private JTextField textFieldPrenom;
 	private JTextField textFieldTel;
 	private JTextField textFieldMail;
-	private JComboBox comboBoxService;
+	private JComboBox<String> comboBoxService;
 	private JLabel lblNom;
 	private JLabel lblPrenom;
 	private JLabel lblTel;
 	private JLabel lblMail;
 	private JLabel lblService;
+	private JLabel erreurChampVideLabel;
 	private JButton btnConfirmerModif;
+	private JButton btnAnnulerModif;
 
-	private Personnel lePersonnel;
 	private ArrayList<modele.Service> laListService;
+	
 	private GestionPersonnel laPageGestionPersonnel;
+	private Personnel lePersonnel;
 
 	/**
 	 * Launch the application.
@@ -79,7 +81,7 @@ public class FormModificationPersonnel extends JFrame {
 		btnConfirmerModif.setBounds(69, 259, 100, 31);
 		contentPane.add(btnConfirmerModif);
 		
-		JButton btnAnnulerModif = new JButton("Annuler");
+		btnAnnulerModif = new JButton("Annuler");
 		btnAnnulerModif.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AnnulerModif();
@@ -108,7 +110,7 @@ public class FormModificationPersonnel extends JFrame {
 		textFieldMail.setBounds(152, 161, 178, 20);
 		contentPane.add(textFieldMail);
 		
-		comboBoxService = new JComboBox();
+		comboBoxService = new JComboBox<String>();
 		comboBoxService.setBounds(152, 203, 178, 20);
 		contentPane.add(comboBoxService);
 		
@@ -141,34 +143,62 @@ public class FormModificationPersonnel extends JFrame {
 		lblService.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblService.setBounds(85, 206, 57, 14);
 		contentPane.add(lblService);
+		
+		erreurChampVideLabel = new JLabel("");
+		erreurChampVideLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		erreurChampVideLabel.setForeground(Color.RED);
+		erreurChampVideLabel.setBounds(92, 234, 249, 14);
+		contentPane.add(erreurChampVideLabel);
 	}
-	public void confirmerModif() {
+
+	/**
+	 * Insert les donnees dans la bdd et ferme la frame.
+	 */
+	public void confirmerModif() {ArrayList<String> champs = new ArrayList<String>();
+		ArrayList<Object> nouvInformationsPersonnel = new ArrayList<Object>();
+		champs.add(textFieldNom.getText());
+		champs.add(textFieldPrenom.getText());
+		champs.add(textFieldTel.getText());
+		champs.add(textFieldMail.getText());
+		
+		for(String champ : champs) {
+			if("".equals(champ)) {
+				erreurChampVideLabel.setText("Veuillez rentrer tous les champs");
+				return;
+			}
+			nouvInformationsPersonnel.add(champ);
+		}
+		
 		int confirmInput = JOptionPane.showConfirmDialog(null, "Confirmer les modifications?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 		if(confirmInput == 0) {
-			ArrayList<Object> nouvInformationsPersonnel = new ArrayList<Object>();
-			nouvInformationsPersonnel.add(textFieldNom.getText());
-			nouvInformationsPersonnel.add(textFieldPrenom.getText());
-			nouvInformationsPersonnel.add(textFieldTel.getText());
-			nouvInformationsPersonnel.add(textFieldMail.getText());
+			
 			for(modele.Service leService : laListService) {
 				if(leService.getNom() == comboBoxService.getSelectedItem().toString()) {
 					nouvInformationsPersonnel.add(leService.getId());
 				}
 			}
 			
-			
-			String servicePersonnel = (String) comboBoxService.getSelectedItem();
-			Controle.modifierPersonnel(nouvInformationsPersonnel, lePersonnel.getId());
+			Controle.setPersonnel(nouvInformationsPersonnel, lePersonnel.getId());
 			
 			this.laPageGestionPersonnel.resetListPersonnel();
 			this.setVisible(false);
 			this.setEnabled(false);
 		}
 	}
+
+	/**
+	 * Ferme la frame.
+	 */
 	public void AnnulerModif() {
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
+	
+	/**
+	 * Recupere des informations.
+	 * param personnel
+	 * param PageGestionPersonnel
+	 */
 	public void insertInformations(Personnel personnel, GestionPersonnel PageGestionPersonnel) {
 		lePersonnel = personnel;
 		laPageGestionPersonnel = PageGestionPersonnel;
@@ -178,12 +208,10 @@ public class FormModificationPersonnel extends JFrame {
 		textFieldTel.setText(lePersonnel.getTel());
 		textFieldMail.setText(lePersonnel.getMail());
 		
-		/*Recuperation services*/
-		laListService = Controle.recupService();
+		laListService = Controle.getListService();
 		for(modele.Service leService : laListService) {
 			comboBoxService.addItem(leService.getNom());
 		}
-		int index;
 		comboBoxService.setSelectedIndex(lePersonnel.getService().getId()-1);
 	}
 }
