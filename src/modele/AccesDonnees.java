@@ -88,7 +88,7 @@ public abstract class AccesDonnees {
 	}
 	public static ArrayList<Absence> requeteRecupAbsence(Personnel lePersonnel) {
 		/*Récupérer Absence*/
-		String sql = "select a.*, m.* from absence a join motif m on a.idmotif = m.idmotif where a.idpersonnel = ? order by a.datedebut, a.datefin";
+		String sql = "select a.*, m.* from absence a join motif m on a.idmotif = m.idmotif where a.idpersonnel = ? ORDER BY `a`.`datefin` DESC";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
 		lesParams.add(lePersonnel.getId());
 		ArrayList<Absence> lesAbsences = new ArrayList<Absence>();
@@ -121,6 +121,17 @@ public abstract class AccesDonnees {
 			lesParams.add(param);
 		}
 		lesParams.add(idService);
+		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn = ConnexionBDD.getInstance(url, login, pwd);
+		cn.reqUpdate(sql, lesParams);
+	}
+	public static void requeteInsertAbsence(Personnel lePersonnel, ArrayList<Object> nouvInformationsAbsence) {
+		String sql = "insert into absence(datedebut, datefin, idmotif, idpersonnel) values(?, ?, ?, ?)";
+		ArrayList<Object> lesParams = new ArrayList<Object>();
+		for(Object param : nouvInformationsAbsence) {
+			lesParams.add(param);
+		}
+		lesParams.add(lePersonnel.getId());
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqUpdate(sql, lesParams);

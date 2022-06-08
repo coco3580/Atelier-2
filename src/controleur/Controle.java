@@ -71,5 +71,8 @@ public class Controle {
 	public static void modifierAbsence(ArrayList<Object> nouvInformationsPersonnel, Absence uneAbsence) {
 		AccesDonnees.requeteModifierAbsence(nouvInformationsPersonnel, uneAbsence);
 	}
+	public static void ajouterAbsence(Personnel lePersonnel, ArrayList<Object> nouvInformationsAbsence) {
+		AccesDonnees.requeteInsertAbsence(lePersonnel, nouvInformationsAbsence);
+	}
 
 }

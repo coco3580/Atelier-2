@@ -137,7 +137,6 @@ public class FormModificationAbsence extends JFrame {
 		for(modele.Motif leMotif : laListMotifs) {
 			comboBoxMotif.addItem(leMotif.getLibelle());
 		}
-		int index;
 		comboBoxMotif.setSelectedIndex(uneAbsence.getMotif().getIdMotif()-1);
 	}
 	public void AnnulerModif() {

@@ -40,7 +40,8 @@ public class GestionAbsence extends JFrame {
 	
 	private JPanel contentPane;
 	private Personnel lePersonnel;
-	private FormModificationAbsence leFormModification = new FormModificationAbsence();
+	private FormModificationAbsence leFormModification;
+	private FormAjoutAbsence leFormAjouter;
 	ArrayList<Absence> laListAbsences = new ArrayList<Absence>();
 
 	/**
@@ -89,6 +90,11 @@ public class GestionAbsence extends JFrame {
 		contentPane.add(lblAbsence);
 		
 		btnAjouterAbsence = new JButton("Ajouter");
+		btnAjouterAbsence.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ajouterAbsence();
+			}
+		});
 		btnAjouterAbsence.setBounds(10, 349, 100, 28);
 		contentPane.add(btnAjouterAbsence);
 		
@@ -160,4 +166,10 @@ public class GestionAbsence extends JFrame {
 			resetListAbsence();
 		}
 	}
+	private void ajouterAbsence() {
+		leFormAjouter = new FormAjoutAbsence();
+		leFormAjouter.insertInformations(lePersonnel, this);
+		leFormAjouter.setVisible(true);
+	}
+	
 }
