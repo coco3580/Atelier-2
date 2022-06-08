@@ -102,13 +102,12 @@ public abstract class AccesDonnees {
 		cn.close();
 		return lesAbsences;
 	}
-	public static void requeteModifierPersonnel(ArrayList<String> nouvInformationsPersonnel, int idService, int idPersonnel) {
+	public static void requeteModifierPersonnel(ArrayList<Object> nouvInformationsPersonnel, int idPersonnel) {
 		String sql = "UPDATE personnel SET nom = ?, prenom = ?, tel = ?, mail = ?, idservice = ? WHERE idpersonnel = ?";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
-		for(String param : nouvInformationsPersonnel) {
+		for(Object param : nouvInformationsPersonnel) {
 			lesParams.add(param);
 		}
-		lesParams.add(idService);
 		lesParams.add(idPersonnel);
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqUpdate(sql, lesParams);

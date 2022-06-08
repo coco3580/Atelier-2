@@ -145,14 +145,20 @@ public class FormModificationPersonnel extends JFrame {
 	public void confirmerModif() {
 		int confirmInput = JOptionPane.showConfirmDialog(null, "Confirmer les modifications?", "", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 		if(confirmInput == 0) {
-			ArrayList<String> nouvInformationsPersonnel = new ArrayList<String>();
+			ArrayList<Object> nouvInformationsPersonnel = new ArrayList<Object>();
 			nouvInformationsPersonnel.add(textFieldNom.getText());
 			nouvInformationsPersonnel.add(textFieldPrenom.getText());
 			nouvInformationsPersonnel.add(textFieldTel.getText());
 			nouvInformationsPersonnel.add(textFieldMail.getText());
+			for(modele.Service leService : laListService) {
+				if(leService.getNom() == comboBoxService.getSelectedItem().toString()) {
+					nouvInformationsPersonnel.add(leService.getId());
+				}
+			}
+			
 			
 			String servicePersonnel = (String) comboBoxService.getSelectedItem();
-			Controle.modifierPersonnel(nouvInformationsPersonnel, lePersonnel.getService().getId(), lePersonnel.getId());
+			Controle.modifierPersonnel(nouvInformationsPersonnel, lePersonnel.getId());
 			
 			this.laPageGestionPersonnel.resetListPersonnel();
 			this.setVisible(false);

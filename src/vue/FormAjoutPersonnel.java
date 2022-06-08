@@ -31,18 +31,21 @@ public class FormAjoutPersonnel extends JFrame {
 	private JTextField textFieldPrenom;
 	private JTextField textFieldTel;
 	private JTextField textFieldMail;
-	private JComboBox comboBoxService;
+	private JComboBox<String> comboBoxService;
 	private JLabel lblNom;
 	private JLabel lblPrenom;
 	private JLabel lblTel;
 	private JLabel lblMail;
 	private JLabel lblService;
+	private JLabel lblAjouterPersonnel;
 	private JButton btnConfirmerModif;
+	private JButton btnAnnulerModif;
 
 	private Personnel lePersonnel;
-	private ArrayList<modele.Service> laListService;
 	private GestionPersonnel laPageGestionPersonnel;
-	private JLabel lblAjouterPersonnel;
+	
+	private ArrayList<modele.Service> laListService;
+	
 
 	/**
 	 * Launch the application.
@@ -81,7 +84,7 @@ public class FormAjoutPersonnel extends JFrame {
 		btnConfirmerModif.setBounds(71, 306, 100, 31);
 		contentPane.add(btnConfirmerModif);
 		
-		JButton btnAnnulerModif = new JButton("Annuler");
+		btnAnnulerModif = new JButton("Annuler");
 		btnAnnulerModif.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AnnulerInsert();
@@ -110,7 +113,7 @@ public class FormAjoutPersonnel extends JFrame {
 		textFieldMail.setBounds(154, 208, 178, 20);
 		contentPane.add(textFieldMail);
 		
-		comboBoxService = new JComboBox();
+		comboBoxService = new JComboBox<String>();
 		comboBoxService.setBounds(154, 250, 178, 20);
 		contentPane.add(comboBoxService);
 		
@@ -151,6 +154,7 @@ public class FormAjoutPersonnel extends JFrame {
 		lblAjouterPersonnel.setBounds(128, 31, 221, 22);
 		contentPane.add(lblAjouterPersonnel);
 	}
+	
 	public void confirmerInsert() {
 		ArrayList<String> informationsPersonnel = new ArrayList<String>();
 		informationsPersonnel.add(textFieldNom.getText());
@@ -166,15 +170,16 @@ public class FormAjoutPersonnel extends JFrame {
 				break;
 			}
 		}
-		
 		this.laPageGestionPersonnel.resetListPersonnel();
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
+	
 	public void AnnulerInsert() {
 		this.setVisible(false);
 		this.setEnabled(false);
 	}
+	
 	public void insertInformations(GestionPersonnel PageGestionPersonnel) {
 		/*Recuperation services*/
 		laListService = AccesDonnees.requeteRecupService();
@@ -182,6 +187,5 @@ public class FormAjoutPersonnel extends JFrame {
 			comboBoxService.addItem(leService.getNom());
 		}
 		laPageGestionPersonnel = PageGestionPersonnel;
-		
 	}
 }
