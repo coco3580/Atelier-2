@@ -3,13 +3,13 @@ package modele;
 import java.util.ArrayList;
 import java.util.Date;
 
+import java.lang.NullPointerException;
+
+import javax.swing.JLabel;
+
 /**
  * @author CorentinAdmin
  * Class requetage avec la bdd
- */
-/**
- * @author CorentinAdmin
- *
  */
 public abstract class AccesDonnees {
 	private static String url = "jdbc:mysql://localhost/atelier2";
@@ -28,10 +28,14 @@ public abstract class AccesDonnees {
 		lesParams.add(pwdResponsable);
 		
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
-		Responsable leResponsable = new Responsable(cn.field("login").toString());
 		cn.reqSelect(sql, lesParams);
-		
 		cn.read();
+		Responsable leResponsable;
+		try {
+			leResponsable = new Responsable(cn.field("login").toString());
+		} catch(NullPointerException e) {
+			leResponsable = new Responsable(null);
+		}
 		cn.close();
 		return leResponsable;
 	}
