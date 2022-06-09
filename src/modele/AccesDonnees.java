@@ -3,11 +3,24 @@ package modele;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * @author CorentinAdmin
+ * Class requetage avec la bdd
+ */
+/**
+ * @author CorentinAdmin
+ *
+ */
 public abstract class AccesDonnees {
 	private static String url = "jdbc:mysql://localhost/atelier2";
 	private static String login = "root";
 	private static String pwd = "";
 	
+	/**
+	 * @param loginResponsable Nom d'utilisateur du responsable inséré.
+	 * @param pwdResponsable Mot de passe du responsable inséré.
+	 * @return leResponsable Classe Responsable.
+	 */
 	public static Responsable requeteConnexion(String loginResponsable, String pwdResponsable) {
 		String sql = "select login from responsable where login = ? and pwd = SHA2(?, 256)";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
@@ -15,17 +28,19 @@ public abstract class AccesDonnees {
 		lesParams.add(pwdResponsable);
 		
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
+		Responsable leResponsable = new Responsable(cn.field("login").toString());
 		cn.reqSelect(sql, lesParams);
 		
 		cn.read();
-		Responsable unResponsable = new Responsable();
-		unResponsable.setLogin((String)cn.field("login"));
 		cn.close();
-		
-		return unResponsable;
+		return leResponsable;
 	}
 	
 	/*getters*/
+	
+	/**
+	 * @return liste lesServices
+	 */
 	public static ArrayList<Service> requeteGetService() {
 		String sql = "select * from service";
 		ArrayList<Service> lesServices = new ArrayList<Service>();
@@ -38,6 +53,11 @@ public abstract class AccesDonnees {
 		cn.close();
 		return lesServices;
 	}
+	
+	/**
+	 * @param lePersonnel Personnel associé aux absences.
+	 * @return liste lesAbsences Toutes les absences liées au personnel.
+	 */
 	public static ArrayList<Absence> requeteGetAbsence(Personnel lePersonnel) {
 		String sql = "select a.*, m.* from absence a join motif m on a.idmotif = m.idmotif where a.idpersonnel = ? ORDER BY `a`.`datefin` DESC";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
@@ -53,6 +73,11 @@ public abstract class AccesDonnees {
 		cn.close();
 		return lesAbsences;
 	}
+	
+	
+	/**
+	 * @return liste lesPersonnels
+	 */
 	public static ArrayList<Personnel> requeteGetPersonnel() {
 		String sql = "select personnel.*, service.* from personnel join service on personnel.idservice = service.idservice";
 		ArrayList<Personnel> lesPersonnels = new ArrayList<Personnel>();
@@ -67,6 +92,11 @@ public abstract class AccesDonnees {
 		cn.close();
 		return lesPersonnels;
 	}
+	
+	
+	/**
+	 * @return liste lesMotifs
+	 */
 	public static ArrayList<Motif> requeteGetMotif() {
 		String sql = "select * from motif";
 		ArrayList<Motif> lesMotifs = new ArrayList<Motif>();
@@ -81,6 +111,12 @@ public abstract class AccesDonnees {
 	}
 	
 	/*setters*/
+	
+	/**
+	 * Modifie les information du personnel dans la bdd.
+	 * @param nouvInformationsPersonnel Liste des nouvelles informations du personnel.
+	 * @param idPersonnel Id du personnel.
+	 */
 	public static void requeteSetPersonnel(ArrayList<Object> nouvInformationsPersonnel, int idPersonnel) {
 		String sql = "UPDATE personnel SET nom = ?, prenom = ?, tel = ?, mail = ?, idservice = ? WHERE idpersonnel = ?";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
@@ -91,6 +127,11 @@ public abstract class AccesDonnees {
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqUpdate(sql, lesParams);
 	}
+	
+	/**
+	 * @param nouvInformationsPersonnel Nouvelles informations d'une absence.
+	 * @param uneAbsence Absence lié aux nouvelles informations.
+	 */
 	public static void requeteSetAbsence(ArrayList<Object> nouvInformationsPersonnel, Absence uneAbsence) {
 		String sql = "UPDATE absence SET datedebut = ?, datefin = ?, idmotif = ? WHERE idpersonnel = ? AND idmotif = ? AND datedebut = ? AND datefin = ?";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
@@ -106,12 +147,15 @@ public abstract class AccesDonnees {
 	}
 	
 	/*suppression*/
-	public static ArrayList<Personnel> requeteSupprimerPersonnel(Personnel lePersonnel) {
+	
+	/**
+	 * @param lePersonnel Personnel supprimé dans la bdd.
+	 */
+	public static void requeteSupprimerPersonnel(Personnel lePersonnel) {
 		/*Delete personnel*/
 		String sql = "delete from personnel where idpersonnel = ?";
 		ArrayList<Object> lesParamsPersonnels = new ArrayList<Object>();
 		lesParamsPersonnels.add(lePersonnel.getId());
-		ArrayList<Personnel> lesPersonnels = new ArrayList<Personnel>();
 		ConnexionBDD cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqUpdate(sql, lesParamsPersonnels);
 		
@@ -138,8 +182,11 @@ public abstract class AccesDonnees {
 		}
 		
 		cn.close();
-		return lesPersonnels;
 	}
+	
+	/**
+	 * @param uneAbsence Absence supprimé dans la bdd.
+	 */
 	public static void requeteSupprimerAbsence(Absence uneAbsence) {
 		String sql = "delete from absence where idpersonnel = ? AND idmotif = ? AND datedebut = ? AND datefin = ?";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
@@ -153,6 +200,11 @@ public abstract class AccesDonnees {
 	}
 	
 	/*insertion*/
+	
+	/**
+	 * @param informationsPersonnel Liste des informations du personnel inséré.
+	 * @param idService Id du service associé au personnel.
+	 */
 	public static void requeteInsererPersonnel(ArrayList<String> informationsPersonnel, int idService) {
 		String sql = "insert into personnel(nom, prenom, tel, mail, idservice) values(?, ?, ?, ?, ?)";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
@@ -164,10 +216,15 @@ public abstract class AccesDonnees {
 		cn = ConnexionBDD.getInstance(url, login, pwd);
 		cn.reqUpdate(sql, lesParams);
 	}
-	public static void requeteInsererAbsence(Personnel lePersonnel, ArrayList<Object> nouvInformationsAbsence) {
+	
+	/**
+	 * @param lePersonnel Personnel lié à l'absence.
+	 * @param informationsAbsence Liste des informations de l'absence.
+	 */
+	public static void requeteInsererAbsence(Personnel lePersonnel, ArrayList<Object> informationsAbsence) {
 		String sql = "insert into absence(datedebut, datefin, idmotif, idpersonnel) values(?, ?, ?, ?)";
 		ArrayList<Object> lesParams = new ArrayList<Object>();
-		for(Object param : nouvInformationsAbsence) {
+		for(Object param : informationsAbsence) {
 			lesParams.add(param);
 		}
 		lesParams.add(lePersonnel.getId());

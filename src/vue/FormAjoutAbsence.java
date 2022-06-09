@@ -25,7 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
- * class de gestion de l'ajout d'une absence
+ * class de gestion de l'ajout d'une absence.
  * @author Corentin Dufeu
  */
 @SuppressWarnings("serial")
@@ -48,7 +48,7 @@ public class FormAjoutAbsence extends JFrame {
 	private ArrayList<Motif> laListMotifs = new ArrayList<Motif>();
 
 	/**
-	 * Launch the application.
+	 * @param args Methode main.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -147,13 +147,13 @@ public class FormAjoutAbsence extends JFrame {
 	
 	/**
 	 * Recupere des informations.
-	 * @param unPersonnel
-	 * @param leGestionAbsence
+	 * @param unPersonnel Personnel associé à l'absence.
+	 * @param laGestionAbsence Page de gestion des absences.
 	 */
-	public void insertInformations(Personnel unPersonnel, GestionAbsence leGestionAbsence){
+	public void insertInformations(Personnel unPersonnel, GestionAbsence laGestionAbsence){
 		
 		lePersonnel = unPersonnel;
-		laPageGestionAbsence = leGestionAbsence;
+		laPageGestionAbsence = laGestionAbsence;
 		
 		laListMotifs = Controle.getListMotif();
 		for(modele.Motif leMotif : laListMotifs) {
@@ -166,15 +166,15 @@ public class FormAjoutAbsence extends JFrame {
 	 */
 	public void confirmerInsert() {
 
-		ArrayList<Object> nouvInformationsAbsence = new ArrayList<Object>();
-		nouvInformationsAbsence.add(spinnerDateDebut.getValue());
-		nouvInformationsAbsence.add(spinnerDateFin.getValue());
+		ArrayList<Object> informationsAbsence = new ArrayList<Object>();
+		informationsAbsence.add(spinnerDateDebut.getValue());
+		informationsAbsence.add(spinnerDateFin.getValue());
 		for(Motif leMotif : laListMotifs) {
 			if(leMotif.getLibelle() == comboBoxMotif.getSelectedItem().toString()) {
-				nouvInformationsAbsence.add(leMotif.getIdMotif());
+				informationsAbsence.add(leMotif.getIdMotif());
 			}
 		}
-		Controle.ajouterAbsence(lePersonnel, nouvInformationsAbsence);
+		Controle.ajouterAbsence(lePersonnel, informationsAbsence);
 		
 		this.laPageGestionAbsence.resetListAbsence();
 		this.setVisible(false);

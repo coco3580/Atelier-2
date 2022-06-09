@@ -23,6 +23,10 @@ import modele.Motif;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * @author CorentinAdmin
+ * class gastion du formulaire de la modification d'une absence
+ */
 @SuppressWarnings("serial")
 public class FormModificationAbsence extends JFrame {
 
@@ -44,6 +48,7 @@ public class FormModificationAbsence extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * @param args Methode main.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -135,12 +140,12 @@ public class FormModificationAbsence extends JFrame {
 	
 	/**
 	 * Recupere des informations.
-	 * param absence
-	 * param leGestionAbsence
+	 * @param absence Absence lié à la modification.
+	 * @param laGestionAbsence Page de gestion des absences.
 	 */
-	public void insertInformations(Absence absence, GestionAbsence leGestionAbsence){
+	public void insertInformations(Absence absence, GestionAbsence laGestionAbsence){
 		uneAbsence = absence;
-		laPageGestionAbsence = leGestionAbsence;
+		laPageGestionAbsence = laGestionAbsence;
 		spinnerDateDebut.setValue(uneAbsence.getDateDebut());
 		spinnerDateFin.setValue(uneAbsence.getDateFin());
 		

@@ -45,9 +45,9 @@ public class FormAjoutPersonnel extends JFrame {
 	
 	private ArrayList<modele.Service> laListService;
 	
-
 	/**
 	 * Launch the application.
+	 * @param args Methode main.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -162,7 +162,7 @@ public class FormAjoutPersonnel extends JFrame {
 
 	/**
 	 * Recupere des informations.
-	 * @param PageGestionPersonnel
+	 * @param PageGestionPersonnel Page de gestion du personnel.
 	 */
 	public void insertInformations(GestionPersonnel PageGestionPersonnel) {
 		laListService = Controle.getListService();

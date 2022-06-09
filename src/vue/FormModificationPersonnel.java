@@ -21,6 +21,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
+/**
+ * @author CorentinAdmin
+ * class gastion du formulaire de la modification d'un personnel
+ */
 @SuppressWarnings("serial")
 public class FormModificationPersonnel extends JFrame {
 
@@ -46,6 +50,7 @@ public class FormModificationPersonnel extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * @param args Methode main.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -196,8 +201,8 @@ public class FormModificationPersonnel extends JFrame {
 	
 	/**
 	 * Recupere des informations.
-	 * param personnel
-	 * param PageGestionPersonnel
+	 * @param personnel Personnel lié à la modification
+	 * @param PageGestionPersonnel Page de gestion des personnels.
 	 */
 	public void insertInformations(Personnel personnel, GestionPersonnel PageGestionPersonnel) {
 		lePersonnel = personnel;

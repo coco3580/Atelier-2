@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * @author CorentinAdmin
+ * Class instanciation de la bdd
+ */
 public class ConnexionBDD {
 	private static ConnexionBDD instance = null;
 	private Connection cn = null;

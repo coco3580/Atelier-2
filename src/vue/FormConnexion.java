@@ -16,6 +16,10 @@ import java.awt.event.ActionEvent;
 
 import controleur.Controle;
 
+/**
+ * @author CorentinAdmin
+ * class gestion du formulaire de connexion
+ */
 @SuppressWarnings("serial")
 public class FormConnexion extends JFrame {
 
@@ -28,9 +32,9 @@ public class FormConnexion extends JFrame {
 	private JPanel panelChampsConnexion;
 	private JLabel titreConnexionLabel;
 	private JButton btnValider;
-
 	/**
 	 * Launch the application.
+	 * @param args Methode main.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

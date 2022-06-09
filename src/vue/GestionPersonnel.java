@@ -27,6 +27,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 
+
+/**
+ * @author CorentinAdmin
+ * class gestion des personnels
+ */
 @SuppressWarnings("serial")
 public class GestionPersonnel extends JFrame {
 
@@ -45,6 +50,7 @@ public class GestionPersonnel extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * @param args Methode main.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

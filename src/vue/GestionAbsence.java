@@ -27,6 +27,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
+
+/**
+ * @author CorentinAdmin
+ * class gestion des absences
+ */
 @SuppressWarnings("serial")
 public class GestionAbsence extends JFrame {
 	
@@ -43,6 +48,7 @@ public class GestionAbsence extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * @param args Methode main.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -129,7 +135,7 @@ public class GestionAbsence extends JFrame {
 
 	/**
 	 * Recupere une instance Personnel.
-	 * param unPersonnel
+	 * @param unPersonnel Personnel lié aux absences.
 	 */
 	public void insertInformations(Personnel unPersonnel) {
 		lePersonnel = unPersonnel;

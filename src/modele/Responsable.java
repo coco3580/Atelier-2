@@ -1,21 +1,24 @@
 package modele;
 
+/**
+ * @author CorentinAdmin
+ * class responsable
+ */
 public class Responsable {
 	private String login;
 	
-	public Responsable() {
-		
+	/**
+	 * constructor
+	 * @param leLogin Login du responsable.
+	 */
+	public Responsable(String leLogin) {
+		login = leLogin;
 	}
 	
+	/**
+	 * @return login Login du responsable.
+	 */
 	public String getLogin() {
 		return this.login;
-	}
-	
-	public void setLogin (String leLogin) {
-		this.login = leLogin;
-	}
-	
-	public void seDeconnecter() {
-		
 	}
 }
